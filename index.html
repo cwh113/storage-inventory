@@ -40,15 +40,6 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .quick .btn{flex:0 0 auto;border-radius:10px}
 .label{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
-/* season panel */
-.season{margin:18px 0 6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.panel{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
-.panel h2{margin:0 0 8px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
-.panel h2 span{font:400 12px var(--mono);color:var(--muted)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--bg)}
-.chip:hover{border-color:var(--ink)}
-.chip b{font:500 12px var(--mono);margin-right:6px}
 .empty{font-size:13px;color:var(--faint)}
 
 /* zones */
@@ -115,9 +106,6 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .field input:focus,.field textarea:focus{border-color:var(--ink)}
 .field textarea{min-height:180px;resize:vertical;line-height:1.5}
 .big{font-size:18px;font-weight:600}
-.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px}
-.months button{font:500 11px var(--mono);border:1px solid var(--line);border-radius:6px;padding:6px 0}
-.months button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg button{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px}
 .seg button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
@@ -152,7 +140,6 @@ ol.steps{padding-left:20px;margin:0;font-size:14px;display:flex;flex-direction:c
     <button class="btn primary" type="submit">Add</button>
   </form>
 
-  <section class="season" id="season" aria-label="This season"></section>
   <section class="zones" id="zones"></section>
 </div>
 
@@ -393,20 +380,6 @@ function blockEl(b) {
 function render() {
   if (!state) return;
   renderStatus();
-  // season panel
-  const now = new Date().getMonth() + 1;
-  const bringOut = state.blocks.filter(b => inSeason(b, now) && !isAway(b) && b.home === "unit");
-  const putBack = state.blocks.filter(b => isAway(b) && (b.months || []).length && !inSeason(b, now));
-  const out = state.blocks.filter(isAway);
-  const chip = b => el("button", { class: "chip", type: "button", onclick: () => openBlock(b.id) }, b.code ? el("b", { text: b.code }) : null, b.name);
-  $("#season").replaceChildren(
-    el("div", { class: "panel" }, el("h2", {}, "Out right now", el("span", { text: String(out.length) })),
-      out.length ? el("div", { class: "chips" }, out.map(chip)) : el("div", { class: "empty", text: "Everything is where it lives." })),
-    el("div", { class: "panel" }, el("h2", {}, "In season", el("span", { text: MONTH_NAMES[now - 1] })),
-      bringOut.length ? el("div", { class: "chips" }, bringOut.map(chip)) : el("div", { class: "empty", text: "Nothing seasonal left in the unit." })),
-    el("div", { class: "panel" }, el("h2", {}, "Ready to go back", el("span", { text: String(putBack.length) })),
-      putBack.length ? el("div", { class: "chips" }, putBack.map(chip)) : el("div", { class: "empty", text: "Nothing out of season is out." }))
-  );
   renderDest();
   // zones
   $("#zones").replaceChildren(...state.zones.map(z => {
@@ -595,14 +568,6 @@ function openBlock(id) {
     type: "button", "aria-pressed": String(b.home === z.id),
     onclick: () => { b.home = z.id; commit(); openBlock(id); }
   }, z.name)));
-  const months = el("div", { class: "months" }, MONTHS.map((m, i) => el("button", {
-    type: "button", title: MONTH_NAMES[i], "aria-label": MONTH_NAMES[i], "aria-pressed": String(inSeason(b, i + 1)),
-    onclick: ev => {
-      const set = new Set(b.months || []); set.has(i + 1) ? set.delete(i + 1) : set.add(i + 1);
-      b.months = [...set].sort((a, c) => a - c); ev.currentTarget.setAttribute("aria-pressed", String(set.has(i + 1))); commit();
-    }
-  }, m)));
-
   const history = state.log.filter(l => l.id === b.id).slice(0, 6);
   const del = el("button", { class: "btn quiet", type: "button" }, "Delete");
   del.addEventListener("click", () => {
@@ -617,7 +582,6 @@ function openBlock(id) {
     isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: "Looks like" }), looksIn),
     el("div", { class: "field" }, el("span", { class: "label", text: "Where it is now" }), where),
     el("div", { class: "field" }, el("span", { class: "label", text: "Where it lives" }), home),
-    el("div", { class: "field" }, el("span", { class: "label", text: "In season" }), months, el("span", { class: "small", text: "Shows up under “In season” these months, and under “Ready to go back” when it's out after." })),
     isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: `Contents · ${b.items.length}` }), itemsIn),
     isLoose(b) && b.from && blockById(b.from) ? el("div", { class: "row" }, el("button", { class: "btn", type: "button", onclick: () => { closeSheet(); looseToBin(b.id, b.from); } }, `Put back in ${blockById(b.from).code}`)) : null,
     isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: "Label code" }), codeIn),
