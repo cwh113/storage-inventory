@@ -458,13 +458,20 @@
       "kind": "loose",
       "name": "Tennis / Pickleball Bag",
       "home": "unit",
-      "zone": "unit",
+      "zone": "apt",
       "months": [],
       "items": [],
-      "movedAt": null
+      "movedAt": "2026-11-01T18:48:54.652Z"
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:48:54.652Z",
+      "id": "bmvy6oeec0",
+      "from": "unit",
+      "to": "apt",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:46:09.153Z",
       "id": "bmvy6kzcx",
