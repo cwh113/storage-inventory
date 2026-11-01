@@ -300,6 +300,21 @@
       "movedAt": "2026-11-01T18:41:39.396Z"
     },
     {
+      "id": "li12",
+      "kind": "loose",
+      "name": "Bow Case",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:41:42.501Z"
+    },
+    {
       "id": "wr1",
       "code": "WR-1",
       "name": "Hobbies",
@@ -395,21 +410,6 @@
       "movedAt": "2026-11-01T18:37:25.927Z"
     },
     {
-      "id": "li12",
-      "kind": "loose",
-      "name": "Bow Case",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        9,
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:37:25.927Z"
-    },
-    {
       "id": "li15",
       "kind": "loose",
       "name": "Climbing Sticks",
@@ -441,6 +441,13 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:41:42.501Z",
+      "id": "li12",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:41:39.396Z",
       "id": "li13",
