@@ -383,6 +383,16 @@
       "movedAt": "2026-11-01T18:41:42.501Z"
     },
     {
+      "id": "bmvy6w63b",
+      "kind": "loose",
+      "name": "Stuff for Pat / Donate",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-01T20:16:01.724Z"
+    },
+    {
       "id": "wr1",
       "code": "WR-1",
       "name": "Hobbies",
@@ -496,16 +506,6 @@
       "movedAt": "2026-11-01T18:54:15.111Z"
     },
     {
-      "id": "bmvy6w63b",
-      "kind": "loose",
-      "name": "Stuff for Pat / Donate",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
       "id": "bmvy8dn610",
       "kind": "loose",
       "name": "Nativity Set",
@@ -517,6 +517,13 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T20:16:01.724Z",
+      "id": "bmvy6w63b",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T20:15:55.353Z",
       "id": "bmvy6oeec0",
