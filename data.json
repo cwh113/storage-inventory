@@ -166,6 +166,37 @@
       "movedAt": null
     },
     {
+      "id": "su6",
+      "code": "SU-6",
+      "name": "Winter / Summer",
+      "looks": "Clear tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [
+        "Beach Towels",
+        "Bike Helmet",
+        "Sami Ski Accessories",
+        "LTHS Lacrosse Blanket",
+        "Red Bowl",
+        "Metal Drink Container Bowl"
+      ],
+      "movedAt": "2026-11-01T20:15:48.031Z"
+    },
+    {
       "id": "li1",
       "kind": "loose",
       "name": "Iceboat Springboard",
@@ -357,37 +388,6 @@
       "movedAt": null
     },
     {
-      "id": "su6",
-      "code": "SU-6",
-      "name": "Winter / Summer",
-      "looks": "Clear tote",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "items": [
-        "Beach Towels",
-        "Bike Helmet",
-        "Sami Ski Accessories",
-        "LTHS Lacrosse Blanket",
-        "Red Bowl",
-        "Metal Drink Container Bowl"
-      ],
-      "movedAt": "2026-11-01T18:35:18.251Z"
-    },
-    {
       "id": "bmvy6tpa7",
       "code": "SU-9",
       "name": "Wedding Bin",
@@ -517,6 +517,14 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T20:15:48.031Z",
+      "id": "su6",
+      "code": "SU-6",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T19:32:24.881Z",
       "id": "su6",
