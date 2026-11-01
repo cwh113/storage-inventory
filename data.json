@@ -514,6 +514,16 @@
       ],
       "items": [],
       "movedAt": "2026-11-01T18:46:09.153Z"
+    },
+    {
+      "id": "bmvy9t6630",
+      "kind": "loose",
+      "name": "Plant Pots",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
