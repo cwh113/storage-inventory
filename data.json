@@ -492,6 +492,17 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmvy6tpa7",
+      "code": "SU-9",
+      "name": "New bin",
+      "looks": "",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
