@@ -559,6 +559,16 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmvy9u47i0",
+      "kind": "loose",
+      "name": "Coffee Maker",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
