@@ -399,21 +399,6 @@
       "movedAt": "2026-11-01T18:53:26.696Z"
     },
     {
-      "id": "li10",
-      "kind": "loose",
-      "name": "Bow",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        9,
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:37:25.927Z"
-    },
-    {
       "id": "li11",
       "kind": "loose",
       "name": "Arrows",
@@ -482,9 +467,31 @@
       "months": [],
       "items": [],
       "movedAt": "2026-11-01T18:48:54.652Z"
+    },
+    {
+      "id": "li10",
+      "kind": "loose",
+      "name": "Bow",
+      "home": "unit",
+      "zone": "zmvy6vbql",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:54:15.111Z"
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:54:15.111Z",
+      "id": "li10",
+      "from": "apt",
+      "to": "zmvy6vbql",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:53:50.772Z",
       "id": "bmvy6tpa7",
