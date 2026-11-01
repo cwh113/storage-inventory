@@ -379,6 +379,17 @@
       "movedAt": "2026-11-01T18:35:18.251Z"
     },
     {
+      "id": "bmvy6tpa7",
+      "code": "SU-9",
+      "name": "Wedding Bin",
+      "looks": "Clear Tote",
+      "home": "unit",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-01T18:53:26.696Z"
+    },
+    {
       "id": "li10",
       "kind": "loose",
       "name": "Bow",
@@ -492,20 +503,17 @@
       "months": [],
       "items": [],
       "movedAt": null
-    },
-    {
-      "id": "bmvy6tpa7",
-      "code": "SU-9",
-      "name": "Wedding Bin",
-      "looks": "",
-      "home": "unit",
-      "zone": "unit",
-      "months": [],
-      "items": [],
-      "movedAt": null
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:53:26.696Z",
+      "id": "bmvy6tpa7",
+      "code": "SU-9",
+      "from": "unit",
+      "to": "apt",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:48:54.652Z",
       "id": "bmvy6oeec0",
