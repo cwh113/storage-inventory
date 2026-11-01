@@ -387,7 +387,8 @@
       "zone": "apt",
       "months": [],
       "items": [
-        "Wedding Dress"
+        "Wedding Dress",
+        "Wedding Keepsakes"
       ],
       "movedAt": "2026-11-01T18:53:26.696Z"
     },
@@ -477,16 +478,6 @@
       "movedAt": "2026-11-01T18:48:54.652Z"
     },
     {
-      "id": "bmvy6ppca0",
-      "kind": "loose",
-      "name": "Wedding Keepsakes",
-      "home": "unit",
-      "zone": "unit",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
       "id": "bmvy6pvf20",
       "kind": "loose",
       "name": "LTHS Lacrosse Blanket",
@@ -498,6 +489,14 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:53:49.002Z",
+      "id": "bmvy6tpa7",
+      "code": "Wedding Keepsakes",
+      "from": "unit",
+      "to": "SU-9",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:53:46.766Z",
       "id": "bmvy6tpa7",
