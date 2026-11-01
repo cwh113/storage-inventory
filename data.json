@@ -118,28 +118,6 @@
       "movedAt": null
     },
     {
-      "id": "su6",
-      "code": "SU-6",
-      "name": "Winter Clothes",
-      "looks": "Clear tote",
-      "home": "unit",
-      "zone": "unit",
-      "months": [
-        11,
-        12,
-        1,
-        2,
-        3
-      ],
-      "items": [
-        "Winter Gloves",
-        "Winter Jackets",
-        "Sami Ski Helmet, Gloves, Goggles and Gaiter",
-        "Misc. Winter Gloves, Hats, Scarves"
-      ],
-      "movedAt": null
-    },
-    {
       "id": "su7",
       "code": "SU-7",
       "name": "Ski Bag",
@@ -309,7 +287,38 @@
         "Hats"
       ],
       "movedAt": null
+    },
+    {
+      "id": "su6",
+      "code": "SU-6",
+      "name": "Winter Clothes",
+      "looks": "Clear tote",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [
+        "Winter Gloves",
+        "Winter Jackets",
+        "Sami Ski Helmet, Gloves, Goggles and Gaiter",
+        "Misc. Winter Gloves, Hats, Scarves"
+      ],
+      "movedAt": "2026-11-01T18:35:18.251Z"
     }
   ],
-  "log": []
+  "log": [
+    {
+      "t": "2026-11-01T18:35:18.251Z",
+      "id": "su6",
+      "code": "SU-6",
+      "from": "unit",
+      "to": "apt",
+      "by": "Chris"
+    }
+  ]
 }
