@@ -419,7 +419,12 @@
       "name": "Tennis / Pickleball Bag",
       "home": "unit",
       "zone": "apt",
-      "months": [],
+      "months": [
+        5,
+        6,
+        7,
+        8
+      ],
       "items": [],
       "movedAt": "2026-11-01T18:48:54.652Z"
     },
