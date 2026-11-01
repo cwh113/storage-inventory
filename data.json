@@ -399,21 +399,6 @@
       "movedAt": "2026-11-01T18:53:26.696Z"
     },
     {
-      "id": "li16",
-      "kind": "loose",
-      "name": "Hunting Pack",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        9,
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:37:25.927Z"
-    },
-    {
       "id": "bmvy6kzcx",
       "kind": "loose",
       "name": "Boo the Ghost",
@@ -437,6 +422,21 @@
       "months": [],
       "items": [],
       "movedAt": "2026-11-01T18:48:54.652Z"
+    },
+    {
+      "id": "li16",
+      "kind": "loose",
+      "name": "Hunting Pack",
+      "home": "unit",
+      "zone": "zmvy6vbql",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:54:18.958Z"
     },
     {
       "id": "li15",
@@ -485,6 +485,13 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:54:18.958Z",
+      "id": "li16",
+      "from": "apt",
+      "to": "zmvy6vbql",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:54:17.676Z",
       "id": "li15",
