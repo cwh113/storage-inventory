@@ -393,6 +393,16 @@
       "movedAt": "2026-11-01T20:16:01.724Z"
     },
     {
+      "id": "bmvy8dn610",
+      "kind": "loose",
+      "name": "Nativity Set",
+      "home": "apt",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-01T20:16:05.602Z"
+    },
+    {
       "id": "wr1",
       "code": "WR-1",
       "name": "Hobbies",
@@ -429,21 +439,6 @@
         "Hats"
       ],
       "movedAt": null
-    },
-    {
-      "id": "bmvy6kzcx",
-      "kind": "loose",
-      "name": "Boo the Ghost",
-      "home": "unit",
-      "zone": "apt",
-      "from": "su3",
-      "months": [
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:46:09.153Z"
     },
     {
       "id": "li16",
@@ -506,17 +501,29 @@
       "movedAt": "2026-11-01T18:54:15.111Z"
     },
     {
-      "id": "bmvy8dn610",
+      "id": "bmvy6kzcx",
       "kind": "loose",
-      "name": "Nativity Set",
-      "home": "apt",
+      "name": "Boo the Ghost",
+      "home": "unit",
       "zone": "apt",
-      "months": [],
+      "from": "su3",
+      "months": [
+        10,
+        11,
+        12
+      ],
       "items": [],
-      "movedAt": null
+      "movedAt": "2026-11-01T18:46:09.153Z"
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T20:16:05.602Z",
+      "id": "bmvy8dn610",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T20:16:01.724Z",
       "id": "bmvy6w63b",
