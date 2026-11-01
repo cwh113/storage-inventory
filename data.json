@@ -162,10 +162,9 @@
       "movedAt": null
     },
     {
-      "id": "l2",
-      "code": "L-2",
-      "name": "Iceboat",
-      "looks": "Loose",
+      "id": "li1",
+      "kind": "loose",
+      "name": "Iceboat Springboard",
       "home": "unit",
       "zone": "unit",
       "months": [
@@ -174,56 +173,100 @@
         2,
         3
       ],
-      "items": [
-        "Iceboat Springboard",
-        "Iceboat Boom and Sail",
-        "Iceboat Runners"
-      ],
+      "items": [],
       "movedAt": null
     },
     {
-      "id": "l3",
-      "code": "L-3",
+      "id": "li2",
+      "kind": "loose",
+      "name": "Iceboat Boom and Sail",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [],
+      "movedAt": null
+    },
+    {
+      "id": "li3",
+      "kind": "loose",
+      "name": "Iceboat Runners",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [],
+      "movedAt": null
+    },
+    {
+      "id": "li4",
+      "kind": "loose",
       "name": "Christmas Tree Stand",
-      "looks": "Loose",
       "home": "unit",
       "zone": "unit",
       "months": [
         11,
         12
       ],
-      "items": [
-        "Christmas Tree Stand"
-      ],
+      "items": [],
       "movedAt": null
     },
     {
-      "id": "l4",
-      "code": "L-4",
-      "name": "Sports",
-      "looks": "Loose",
+      "id": "li5",
+      "kind": "loose",
+      "name": "Lacrosse Bag",
       "home": "unit",
       "zone": "unit",
       "months": [],
-      "items": [
-        "Lacrosse Bag",
-        "Boots"
-      ],
+      "items": [],
       "movedAt": null
     },
     {
-      "id": "l5",
-      "code": "L-5",
-      "name": "Home & Garden",
-      "looks": "Loose",
+      "id": "li6",
+      "kind": "loose",
+      "name": "Boots",
       "home": "unit",
       "zone": "unit",
       "months": [],
-      "items": [
-        "Bird Feeder & Hanger",
-        "Aquarium Supplies",
-        "Misc. Scrap Wood"
-      ],
+      "items": [],
+      "movedAt": null
+    },
+    {
+      "id": "li7",
+      "kind": "loose",
+      "name": "Bird Feeder & Hanger",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": null
+    },
+    {
+      "id": "li8",
+      "kind": "loose",
+      "name": "Aquarium Supplies",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": null
+    },
+    {
+      "id": "li9",
+      "kind": "loose",
+      "name": "Misc. Scrap Wood",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
       "movedAt": null
     },
     {
@@ -292,10 +335,9 @@
       "movedAt": "2026-11-01T18:35:18.251Z"
     },
     {
-      "id": "l1",
-      "code": "L-1",
-      "name": "Archery & Hunting",
-      "looks": "Loose",
+      "id": "li10",
+      "kind": "loose",
+      "name": "Bow",
       "home": "unit",
       "zone": "apt",
       "months": [
@@ -304,15 +346,97 @@
         11,
         12
       ],
-      "items": [
-        "Bow",
-        "Arrows",
-        "Bow Case",
-        "Archery Target",
-        "Tree Stand",
-        "Climbing Sticks",
-        "Hunting Pack"
+      "items": [],
+      "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "li11",
+      "kind": "loose",
+      "name": "Arrows",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        9,
+        10,
+        11,
+        12
       ],
+      "items": [],
+      "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "li12",
+      "kind": "loose",
+      "name": "Bow Case",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "li13",
+      "kind": "loose",
+      "name": "Archery Target",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "li14",
+      "kind": "loose",
+      "name": "Tree Stand",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "li15",
+      "kind": "loose",
+      "name": "Climbing Sticks",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "li16",
+      "kind": "loose",
+      "name": "Hunting Pack",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
       "movedAt": "2026-11-01T18:37:25.927Z"
     }
   ],

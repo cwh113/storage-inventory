@@ -33,6 +33,11 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 14px;background:var(--bg);outline:none}
 .search input:focus{border-color:var(--ink)}
 
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.quick input,.quick select{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);outline:none;min-width:0}
+.quick input{flex:3 1 220px}.quick select{flex:2 1 180px;max-width:100%}
+.quick input:focus,.quick select:focus{border-color:var(--ink)}
+.quick .btn{flex:0 0 auto;border-radius:10px}
 .label{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
 /* season panel */
@@ -70,6 +75,20 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .block.dragging{opacity:.2}
 .ghost{position:fixed;z-index:50;pointer-events:none;width:160px;box-shadow:0 10px 30px rgba(0,0,0,.18);transform:rotate(-2deg);cursor:grabbing}
 .placeholder{border:1.5px dashed var(--ink);border-radius:10px;min-height:62px}
+.items{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);min-height:44px;align-items:center}
+.items>.label{width:100%;margin-bottom:2px}
+.item{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1.2;padding:6px 11px 6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--bg);
+  user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:grab;max-width:100%}
+.item::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--faint);flex:none}
+.item:hover{border-color:var(--ink)}
+.item.away{border-color:var(--ink)}
+.item.away::before{background:var(--ink)}
+.item.away::after{content:"out";font:500 10px var(--mono);color:var(--muted)}
+.item.dim{opacity:.25}.item.hit{box-shadow:0 0 0 2px var(--ink);border-color:var(--ink)}
+.item.dragging{opacity:.2}
+.item.ghost{width:auto}
+.placeholder.ph-item{min-height:30px;width:90px;border-radius:999px}
+.items .none{font-size:13px;color:var(--faint)}
 .block .found{font-size:12px;margin-top:4px;color:var(--ink);overflow-wrap:anywhere}
 
 /* sheet */
@@ -116,6 +135,11 @@ ol.steps{padding-left:20px;margin:0;font-size:14px;display:flex;flex-direction:c
   </header>
 
   <div class="search"><input id="q" type="search" placeholder="Find an item… (e.g. sleeping bag)" autocomplete="off" aria-label="Search items"></div>
+  <form class="quick" id="quick" autocomplete="off">
+    <input id="qa-name" placeholder="Add items… (separate several with commas)" aria-label="Item to add">
+    <select id="qa-dest" aria-label="Where it goes"></select>
+    <button class="btn primary" type="submit">Add</button>
+  </form>
 
   <section class="season" id="season" aria-label="This season"></section>
   <section class="zones" id="zones"></section>
@@ -233,6 +257,8 @@ window.addEventListener("focus", () => { if (!dirty && !saving && !dragging && !
 const zoneById = id => state.zones.find(z => z.id === id);
 const blockById = id => state.blocks.find(b => b.id === id);
 const isAway = b => b.zone !== b.home;
+const isLoose = b => b.kind === "loose";
+const label = b => b.code || b.name;
 const inSeason = (b, m) => (b.months || []).includes(m);
 function logMove(b, from, to) {
   state.log.unshift({ t: new Date().toISOString(), id: b.id, code: b.code, from, to, by: who() || undefined });
@@ -241,7 +267,7 @@ function logMove(b, from, to) {
 function moveBlock(id, zoneId, index) {
   const b = blockById(id); if (!b) return;
   const from = b.zone;
-  const list = state.blocks.filter(x => x.zone === zoneId && x.id !== id);
+  const list = state.blocks.filter(x => x.zone === zoneId && x.id !== id && isLoose(x) === isLoose(b));
   state.blocks = state.blocks.filter(x => x.id !== id);
   b.zone = zoneId;
   if (from !== zoneId) { b.movedAt = new Date().toISOString(); logMove(b, from, zoneId); }
@@ -252,7 +278,7 @@ function moveBlock(id, zoneId, index) {
     state.blocks.splice(last ? state.blocks.indexOf(last) + 1 : state.blocks.length, 0, b);
   }
   queueSave(); render();
-  if (from !== zoneId) toast(`${b.code} moved to ${zoneById(zoneId).name}`);
+  if (from !== zoneId) toast(`${label(b)} moved to ${zoneById(zoneId).name}`);
 }
 function nextCode(prefix) {
   let n = 0;
@@ -266,12 +292,25 @@ const shortDate = iso => new Date(iso).toLocaleDateString(undefined, { month: "s
 function matches(b) {
   if (!query) return null;
   const q = query.toLowerCase();
-  const hits = b.items.filter(i => i.toLowerCase().includes(q));
-  const self = (b.code + " " + b.name + " " + (b.looks || "")).toLowerCase().includes(q);
+  const hits = (b.items || []).filter(i => i.toLowerCase().includes(q));
+  const self = ((b.code || "") + " " + b.name + " " + (b.looks || "")).toLowerCase().includes(q);
   return { ok: self || hits.length > 0, hits };
 }
 
+function itemEl(b) {
+  const m = matches(b);
+  const cls = ["item"];
+  if (isAway(b)) cls.push("away");
+  if (m && !m.ok) cls.push("dim");
+  if (m && m.ok) cls.push("hit");
+  const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-label": b.name + (isAway(b) ? ", out" : "") }, b.name);
+  node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBlock(b.id); } });
+  attachDrag(node);
+  return node;
+}
+
 function blockEl(b) {
+  if (isLoose(b)) return itemEl(b);
   const m = matches(b);
   const cls = ["block"];
   if (b.looks === "Loose") cls.push("loose");
@@ -298,7 +337,7 @@ function render() {
   const bringOut = state.blocks.filter(b => inSeason(b, now) && !isAway(b) && b.home === "unit");
   const putBack = state.blocks.filter(b => isAway(b) && (b.months || []).length && !inSeason(b, now));
   const out = state.blocks.filter(isAway);
-  const chip = b => el("button", { class: "chip", type: "button", onclick: () => openBlock(b.id) }, el("b", { text: b.code }), b.name);
+  const chip = b => el("button", { class: "chip", type: "button", onclick: () => openBlock(b.id) }, b.code ? el("b", { text: b.code }) : null, b.name);
   $("#season").replaceChildren(
     el("div", { class: "panel" }, el("h2", {}, "Out right now", el("span", { text: String(out.length) })),
       out.length ? el("div", { class: "chips" }, out.map(chip)) : el("div", { class: "empty", text: "Everything is where it lives." })),
@@ -307,19 +346,53 @@ function render() {
     el("div", { class: "panel" }, el("h2", {}, "Ready to go back", el("span", { text: String(putBack.length) })),
       putBack.length ? el("div", { class: "chips" }, putBack.map(chip)) : el("div", { class: "empty", text: "Nothing out of season is out." }))
   );
+  renderDest();
   // zones
   $("#zones").replaceChildren(...state.zones.map(z => {
-    const list = state.blocks.filter(b => b.zone === z.id);
+    const bins = state.blocks.filter(b => b.zone === z.id && !isLoose(b));
+    const loose = state.blocks.filter(b => b.zone === z.id && isLoose(b));
     return el("section", { class: "zone", "data-zone": z.id },
       el("div", { class: "zone-head" },
         el("h3", { text: z.name }),
-        el("span", { class: "label", text: z.note || `${list.length}` }),
-        el("button", { class: "add", type: "button", onclick: () => addBlock(z.id) }, "+ Add")
+        el("span", { class: "label", text: z.note || `${bins.length} bin${bins.length === 1 ? "" : "s"}` }),
+        el("button", { class: "add", type: "button", onclick: () => addBlock(z.id) }, "+ Bin"),
+        el("button", { class: "add", type: "button", onclick: () => addBlock(z.id, true) }, "+ Item")
       ),
-      el("div", { class: "blocks" }, list.length ? list.map(blockEl) : el("div", { class: "hint", text: "Drag a bin here" }))
+      el("div", { class: "blocks" }, bins.length ? bins.map(blockEl) : el("div", { class: "hint", text: "Drag a bin here" })),
+      el("div", { class: "items" }, el("span", { class: "label", text: `Loose · ${loose.length}` }),
+        loose.length ? loose.map(itemEl) : el("span", { class: "none", text: "Drag loose items here" }))
     );
   }));
 }
+
+/* ---------- quick add ---------- */
+function renderDest() {
+  const sel = $("#qa-dest");
+  const keep = sel.value || store.get("si_dest") || "";
+  sel.replaceChildren(...state.zones.map(z => el("optgroup", { label: z.name },
+    el("option", { value: "loose:" + z.id }, `Loose in ${z.name}`),
+    state.blocks.filter(b => b.zone === z.id && !isLoose(b)).map(b => el("option", { value: "bin:" + b.id }, `${b.code} · ${b.name}`))
+  )));
+  if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
+}
+$("#qa-dest").addEventListener("change", e => store.set("si_dest", e.target.value));
+$("#quick").addEventListener("submit", e => {
+  e.preventDefault();
+  const names = $("#qa-name").value.split(",").map(s => s.trim()).filter(Boolean);
+  if (!names.length) { $("#qa-name").focus(); return; }
+  const [kind, ref] = $("#qa-dest").value.split(":");
+  let where;
+  if (kind === "bin") {
+    const b = blockById(ref); if (!b) return;
+    b.items.push(...names); where = b.code;
+  } else {
+    names.forEach((name, i) => state.blocks.push({ id: "b" + Date.now().toString(36) + i, kind: "loose", name, home: ref, zone: ref, months: [], items: [], movedAt: null }));
+    where = "loose in " + zoneById(ref).name;
+  }
+  $("#qa-name").value = "";
+  queueSave(); render();
+  toast(`Added ${names.length === 1 ? names[0] : names.length + " items"} to ${where}`);
+});
 
 $("#q").addEventListener("input", e => { query = e.target.value.trim(); render(); });
 
@@ -351,7 +424,7 @@ function attachDrag(node) {
       const r = node.getBoundingClientRect();
       const ghost = node.cloneNode(true); ghost.classList.add("ghost"); ghost.classList.remove("dim");
       document.body.append(ghost);
-      const ph = el("div", { class: "placeholder" });
+      const ph = el("div", { class: "placeholder" + (node.classList.contains("item") ? " ph-item" : "") });
       dragging = { id, node, ghost, ph, dx: start.x - r.left, dy: start.y - r.top, zone: null, index: 0 };
       node.classList.add("dragging");
       drag(ev.clientX, ev.clientY);
@@ -373,16 +446,17 @@ let scrollRAF = null, lastPt = null;
 function drag(x, y) {
   const d = dragging; if (!d) return;
   lastPt = { x, y };
-  d.ghost.style.left = (x - Math.min(d.dx, 150)) + "px";
+  d.ghost.style.left = (x - Math.min(d.dx, d.ghost.offsetWidth - 10)) + "px";
   d.ghost.style.top = (y - d.dy) + "px";
   const target = document.elementFromPoint(x, y);
   const zoneEl = target && target.closest(".zone");
   document.querySelectorAll(".zone.over").forEach(z => z !== zoneEl && z.classList.remove("over"));
   if (!zoneEl) { d.zone = null; d.ph.remove(); return; }
   zoneEl.classList.add("over");
-  const grid = zoneEl.querySelector(".blocks");
-  zoneEl.querySelector(".hint")?.remove();
-  const kids = [...grid.querySelectorAll(".block:not(.dragging)")];
+  const item = d.node.classList.contains("item");
+  const grid = zoneEl.querySelector(item ? ".items" : ".blocks");
+  zoneEl.querySelector(item ? ".items .none" : ".hint")?.remove();
+  const kids = [...grid.querySelectorAll(item ? ".item:not(.dragging)" : ".block:not(.dragging)")];
   let index = kids.length;
   for (let i = 0; i < kids.length; i++) {
     const r = kids[i].getBoundingClientRect();
@@ -425,12 +499,12 @@ function openBlock(id) {
   const commit = () => { queueSave(); render(); };
   const nameIn = el("input", { class: "big", id: "f-name", value: b.name, "aria-label": "Name" });
   nameIn.addEventListener("change", () => { b.name = nameIn.value.trim() || b.name; commit(); });
-  const codeIn = el("input", { id: "f-code", value: b.code });
+  const codeIn = el("input", { id: "f-code", value: b.code || "" });
   codeIn.addEventListener("change", () => { b.code = codeIn.value.trim() || b.code; commit(); openBlock(id); });
   const looksIn = el("input", { id: "f-looks", value: b.looks || "", placeholder: "e.g. Clear tote, blue lid, 27 gal" });
   looksIn.addEventListener("change", () => { b.looks = looksIn.value.trim(); commit(); });
   const itemsIn = el("textarea", { id: "f-items", placeholder: "One item per line" });
-  itemsIn.value = b.items.join("\n");
+  itemsIn.value = (b.items || []).join("\n");
   itemsIn.addEventListener("change", () => { b.items = itemsIn.value.split("\n").map(s => s.trim()).filter(Boolean); commit(); });
 
   const where = el("div", { class: "seg" }, state.zones.map(z => el("button", {
@@ -452,20 +526,20 @@ function openBlock(id) {
   const history = state.log.filter(l => l.id === b.id).slice(0, 6);
   const del = el("button", { class: "btn quiet", type: "button" }, "Delete");
   del.addEventListener("click", () => {
-    if (del.dataset.armed) { state.blocks = state.blocks.filter(x => x.id !== b.id); commit(); closeSheet(); toast(`${b.code} deleted`); }
+    if (del.dataset.armed) { state.blocks = state.blocks.filter(x => x.id !== b.id); commit(); closeSheet(); toast(`${label(b)} deleted`); }
     else { del.dataset.armed = "1"; del.textContent = "Tap again to delete"; del.classList.remove("quiet"); }
   });
 
   const s = sheet(
-    el("div", { class: "sheet-top" }, el("span", { class: "code", text: b.code }), isAway(b) ? el("span", { class: "label", text: "Out" }) : null, el("span", { class: "sp" }),
+    el("div", { class: "sheet-top" }, isLoose(b) ? el("span", { class: "label", text: "Loose item" }) : el("span", { class: "code", text: b.code }), isAway(b) ? el("span", { class: "label", text: "Out" }) : null, el("span", { class: "sp" }),
       el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
     el("div", { class: "field" }, nameIn),
-    el("div", { class: "field" }, el("span", { class: "label", text: "Looks like" }), looksIn),
+    isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: "Looks like" }), looksIn),
     el("div", { class: "field" }, el("span", { class: "label", text: "Where it is now" }), where),
     el("div", { class: "field" }, el("span", { class: "label", text: "Where it lives" }), home),
     el("div", { class: "field" }, el("span", { class: "label", text: "In season" }), months, el("span", { class: "small", text: "Shows up under “In season” these months, and under “Ready to go back” when it's out after." })),
-    el("div", { class: "field" }, el("span", { class: "label", text: `Contents · ${b.items.length}` }), itemsIn),
-    el("div", { class: "field" }, el("span", { class: "label", text: "Label code" }), codeIn),
+    isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: `Contents · ${b.items.length}` }), itemsIn),
+    isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: "Label code" }), codeIn),
     history.length ? el("div", { class: "field" }, el("span", { class: "label", text: "History" }),
       el("div", { class: "log" }, history.map(l => el("div", {}, el("time", { text: shortDate(l.t) }), `${zoneById(l.from)?.name || l.from} → ${zoneById(l.to)?.name || l.to}${l.by ? " · " + l.by : ""}`)))) : null,
     el("div", { class: "row" }, del)
@@ -473,10 +547,11 @@ function openBlock(id) {
   s.querySelector("#f-name")?.blur();
 }
 
-function addBlock(zoneId) {
+function addBlock(zoneId, loose = false) {
   const id = "b" + Date.now().toString(36);
-  const code = nextCode(prefixFor(zoneId));
-  state.blocks.push({ id, code, name: "New bin", looks: "", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null });
+  state.blocks.push(loose
+    ? { id, kind: "loose", name: "New item", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null }
+    : { id, code: nextCode(prefixFor(zoneId)), name: "New bin", looks: "", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null });
   queueSave(); render(); openBlock(id);
   setTimeout(() => { const n = $("#f-name"); n && (n.focus(), n.select()); }, 50);
 }
