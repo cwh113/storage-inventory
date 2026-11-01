@@ -321,7 +321,7 @@ function toggleBin(id) { openBins.has(id) ? openBins.delete(id) : openBins.add(i
 
 function nextCode(prefix) {
   let n = 0;
-  for (const b of state.blocks) { const m = b.code.match(new RegExp("^" + prefix + "-(\\d+)$")); if (m) n = Math.max(n, +m[1]); }
+  for (const b of state.blocks) { const m = (b.code || "").match(new RegExp("^" + prefix + "-(\\d+)$")); if (m) n = Math.max(n, +m[1]); }
   return `${prefix}-${n + 1}`;
 }
 const prefixFor = zoneId => ({ unit: "SU", work: "WR", apt: "AP" }[zoneId] || zoneId.slice(0, 2).toUpperCase());
