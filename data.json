@@ -438,6 +438,16 @@
       ],
       "items": [],
       "movedAt": "2026-11-01T18:37:25.927Z"
+    },
+    {
+      "id": "bmvy6fy7k",
+      "kind": "loose",
+      "name": "New item",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
