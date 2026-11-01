@@ -380,7 +380,8 @@
       "items": [
         "Beach Towels",
         "Bike Helmet",
-        "Sami Ski Accessories"
+        "Sami Ski Accessories",
+        "LTHS Lacrosse Blanket"
       ],
       "movedAt": "2026-11-01T18:35:18.251Z"
     },
@@ -395,7 +396,6 @@
       "items": [
         "Wedding Dress",
         "Wedding Keepsakes",
-        "LTHS Lacrosse Blanket",
         "Books from Mom (Irish Eyes)",
         "Tiffany Glasses"
       ],
@@ -504,6 +504,14 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T19:32:24.881Z",
+      "id": "su6",
+      "code": "LTHS Lacrosse Blanket",
+      "from": "SU-9",
+      "to": "SU-6",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:54:18.958Z",
       "id": "li16",
