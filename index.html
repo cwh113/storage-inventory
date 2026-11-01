@@ -316,8 +316,15 @@ function looseToBin(id, binId) {
   state.log.unshift({ t: new Date().toISOString(), id: B.id, code: b.name, from: b.zone, to: B.code, by: who() || undefined });
   queueSave(); render(); toast(`${b.name} put in ${B.code}`);
 }
-const openBins = new Set(JSON.parse(store.get("si_open") || "[]"));
-function toggleBin(id) { openBins.has(id) ? openBins.delete(id) : openBins.add(id); store.set("si_open", JSON.stringify([...openBins])); render(); }
+// One bin open at a time; clicking anywhere outside it closes it.
+const openBins = new Set();
+let lastDrop = 0;
+function toggleBin(id) { const was = openBins.has(id); openBins.clear(); if (!was) openBins.add(id); render(); }
+document.addEventListener("click", e => {
+  if (!openBins.size || dragging || Date.now() - lastDrop < 400) return;
+  if (e.target.closest(".block.open, .scrim, .toast")) return;
+  openBins.clear(); render();
+});
 
 function nextCode(prefix) {
   let n = 0;
@@ -546,7 +553,7 @@ function autoScroll() {
   if (dy) { window.scrollBy(0, dy); drag(lastPt.x, lastPt.y); }
 }
 function drop() {
-  const d = dragging; dragging = null;
+  const d = dragging; dragging = null; lastDrop = Date.now();
   d.ghost.remove(); d.ph.remove(); d.node.classList.remove("dragging");
   clearMarks();
   const p = d.payload, t = d.target;
