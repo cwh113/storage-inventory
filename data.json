@@ -399,36 +399,6 @@
       "movedAt": "2026-11-01T18:53:26.696Z"
     },
     {
-      "id": "li11",
-      "kind": "loose",
-      "name": "Arrows",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        9,
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:37:25.927Z"
-    },
-    {
-      "id": "li15",
-      "kind": "loose",
-      "name": "Climbing Sticks",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        9,
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:37:25.927Z"
-    },
-    {
       "id": "li16",
       "kind": "loose",
       "name": "Hunting Pack",
@@ -469,6 +439,36 @@
       "movedAt": "2026-11-01T18:48:54.652Z"
     },
     {
+      "id": "li15",
+      "kind": "loose",
+      "name": "Climbing Sticks",
+      "home": "unit",
+      "zone": "zmvy6vbql",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:54:17.676Z"
+    },
+    {
+      "id": "li11",
+      "kind": "loose",
+      "name": "Arrows",
+      "home": "unit",
+      "zone": "zmvy6vbql",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T18:54:16.568Z"
+    },
+    {
       "id": "li10",
       "kind": "loose",
       "name": "Bow",
@@ -485,6 +485,20 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T18:54:17.676Z",
+      "id": "li15",
+      "from": "apt",
+      "to": "zmvy6vbql",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-01T18:54:16.568Z",
+      "id": "li11",
+      "from": "apt",
+      "to": "zmvy6vbql",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T18:54:15.111Z",
       "id": "li10",
