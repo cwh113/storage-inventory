@@ -296,11 +296,12 @@
       "home": "unit",
       "zone": "apt",
       "months": [
-        11,
-        12,
         1,
         2,
-        3
+        3,
+        4,
+        11,
+        12
       ],
       "items": [
         "Beach Towels",
