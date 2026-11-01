@@ -197,6 +197,23 @@
       "movedAt": "2026-11-01T20:15:48.031Z"
     },
     {
+      "id": "bmvy6tpa7",
+      "code": "SU-9",
+      "name": "Wedding Bin",
+      "looks": "Clear Tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [
+        "Wedding Dress",
+        "Wedding Keepsakes",
+        "Books from Mom (Irish Eyes)",
+        "Tiffany Glasses",
+        "Ralph Lauren Box (Empty)"
+      ],
+      "movedAt": "2026-11-01T20:15:51.077Z"
+    },
+    {
       "id": "li1",
       "kind": "loose",
       "name": "Iceboat Springboard",
@@ -388,23 +405,6 @@
       "movedAt": null
     },
     {
-      "id": "bmvy6tpa7",
-      "code": "SU-9",
-      "name": "Wedding Bin",
-      "looks": "Clear Tote",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [
-        "Wedding Dress",
-        "Wedding Keepsakes",
-        "Books from Mom (Irish Eyes)",
-        "Tiffany Glasses",
-        "Ralph Lauren Box (Empty)"
-      ],
-      "movedAt": "2026-11-01T18:53:26.696Z"
-    },
-    {
       "id": "bmvy6kzcx",
       "kind": "loose",
       "name": "Boo the Ghost",
@@ -517,6 +517,14 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T20:15:51.077Z",
+      "id": "bmvy6tpa7",
+      "code": "SU-9",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T20:15:48.031Z",
       "id": "su6",
