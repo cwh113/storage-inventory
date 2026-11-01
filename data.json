@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "zones": [
+    {
+      "id": "unit",
+      "name": "Storage Unit",
+      "note": "Top = front of unit"
+    },
+    {
+      "id": "work",
+      "name": "Work Room",
+      "note": ""
+    },
+    {
+      "id": "apt",
+      "name": "Apartment",
+      "note": ""
+    }
+  ],
+  "blocks": [
+    {
+      "id": "su1",
+      "code": "SU-1",
+      "name": "Home & Keepsakes",
+      "looks": "Black & yellow tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [
+        "Dog Stuff",
+        "Flags and Burgees",
+        "Sentimental Stuff",
+        "Rocks",
+        "Chance Paintings",
+        "Upholstery Stuff"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su2",
+      "code": "SU-2",
+      "name": "Black Sailing Bin",
+      "looks": "Black tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "items": [
+        "Life Jackets",
+        "Foul Weather Jackets & Pants",
+        "Gloves, Boots, Etc."
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su3",
+      "code": "SU-3",
+      "name": "Holiday",
+      "looks": "Large clear tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        10,
+        11,
+        12
+      ],
+      "items": [
+        "Boo the Ghost",
+        "Misc. Fall / Xmas"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su4",
+      "code": "SU-4",
+      "name": "Hunting & Camping",
+      "looks": "Clear tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [
+        "Sleeping Bag",
+        "Small Hunting Backpack",
+        "Bike Pump",
+        "Tree Stand Cushion"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su5",
+      "code": "SU-5",
+      "name": "Skating & Iceboat",
+      "looks": "Clear tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [
+        "Knife Block",
+        "Ice Skates / Pucks",
+        "Ice Boat Chocks",
+        "Ice Boat Gear"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su6",
+      "code": "SU-6",
+      "name": "Winter Clothes",
+      "looks": "Clear tote",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [
+        "Winter Gloves",
+        "Winter Jackets",
+        "Sami Ski Helmet, Gloves, Goggles and Gaiter",
+        "Misc. Winter Gloves, Hats, Scarves"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su7",
+      "code": "SU-7",
+      "name": "Ski Bag",
+      "looks": "Long ski bag",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [
+        "Skis",
+        "Ski Poles",
+        "Ski Jacket",
+        "Ski Pants",
+        "Ski Socks",
+        "Ski Goggles"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "su8",
+      "code": "SU-8",
+      "name": "Boot Bag",
+      "looks": "Ski boot bag",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [
+        "Ski Helmet",
+        "Ski Boots",
+        "Hand Warmers",
+        "Waxing Tools"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "l1",
+      "code": "L-1",
+      "name": "Archery & Hunting",
+      "looks": "Loose",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "items": [
+        "Bow",
+        "Arrows",
+        "Bow Case",
+        "Archery Target",
+        "Tree Stand",
+        "Climbing Sticks",
+        "Hunting Pack"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "l2",
+      "code": "L-2",
+      "name": "Iceboat",
+      "looks": "Loose",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "items": [
+        "Iceboat Springboard",
+        "Iceboat Boom and Sail",
+        "Iceboat Runners"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "l3",
+      "code": "L-3",
+      "name": "Christmas Tree Stand",
+      "looks": "Loose",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        11,
+        12
+      ],
+      "items": [
+        "Christmas Tree Stand"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "l4",
+      "code": "L-4",
+      "name": "Sports",
+      "looks": "Loose",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [
+        "Lacrosse Bag",
+        "Boots"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "l5",
+      "code": "L-5",
+      "name": "Home & Garden",
+      "looks": "Loose",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [
+        "Bird Feeder & Hanger",
+        "Aquarium Supplies",
+        "Misc. Scrap Wood"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "wr1",
+      "code": "WR-1",
+      "name": "Hobbies",
+      "looks": "Bin labeled “Hobbies”",
+      "home": "work",
+      "zone": "work",
+      "months": [],
+      "items": [
+        "Medical Device Stuff: Springs, EP Leads, Valves, TAVR Valves, Delivery Catheters, Misc. Connectors, Capstone, Packaging Samples, ICE Catheter",
+        "Chalk Bag",
+        "Climbing Harness",
+        "Chess Set",
+        "Rubik’s Cubes",
+        "Muscle Roller",
+        "Drone Controller",
+        "Kindle Screen Protectors",
+        "Leather Dopp Kit",
+        "Glock Case"
+      ],
+      "movedAt": null
+    },
+    {
+      "id": "wr2",
+      "code": "WR-2",
+      "name": "Green Plano Tote",
+      "looks": "Green Plano tote",
+      "home": "work",
+      "zone": "work",
+      "months": [],
+      "items": [
+        "Sleeping Bag",
+        "REI Chair",
+        "Bike Helmet",
+        "Hats"
+      ],
+      "movedAt": null
+    }
+  ],
+  "log": []
+}

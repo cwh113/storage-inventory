@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Storage Inventory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#ffffff; --ink:#111111; --muted:#6b6b6b; --faint:#9a9a9a;
+  --line:#e4e4e4; --line-strong:#111111; --wash:#f6f6f5; --mark:#111111;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-font-smoothing:antialiased;
+  padding:env(safe-area-inset-top,0) max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto}
+
+header{display:flex;align-items:center;gap:12px;padding:20px 0 14px;border-bottom:1px solid var(--line-strong)}
+h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
+.status{font:12px var(--mono);color:var(--muted);white-space:nowrap}
+.status.warn{color:var(--ink);text-decoration:underline;cursor:pointer}
+.iconbtn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px}
+.iconbtn:hover{border-color:var(--ink)}
+
+.search{margin:16px 0 4px;position:relative}
+.search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 14px;background:var(--bg);outline:none}
+.search input:focus{border-color:var(--ink)}
+
+.label{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* season panel */
+.season{margin:18px 0 6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.panel{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.panel h2{margin:0 0 8px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.panel h2 span{font:400 12px var(--mono);color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--bg)}
+.chip:hover{border-color:var(--ink)}
+.chip b{font:500 12px var(--mono);margin-right:6px}
+.empty{font-size:13px;color:var(--faint)}
+
+/* zones */
+.zones{display:grid;gap:14px;margin-top:18px}
+.zone{border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0;transition:border-color .12s,background .12s}
+.zone.over{border-color:var(--ink);background:var(--wash)}
+.zone-head{display:flex;align-items:baseline;gap:10px;margin:2px 2px 10px}
+.zone-head h3{margin:0;font-size:16px;font-weight:600}
+.zone-head .label{flex:1}
+.zone-head .add{font-size:13px;color:var(--muted)}
+.zone-head .add:hover{color:var(--ink)}
+.blocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;min-height:64px}
+.zone .hint{grid-column:1/-1;font-size:13px;color:var(--faint);padding:18px 4px;text-align:center;border:1px dashed var(--line);border-radius:10px}
+
+.block{position:relative;border:1px solid var(--ink);border-radius:10px;padding:9px 10px 10px;background:var(--bg);
+  user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:grab;min-width:0;text-align:left;width:100%}
+.block .code{font:500 12px var(--mono)}
+.block .name{font-weight:500;font-size:14px;line-height:1.25;margin-top:2px;overflow-wrap:anywhere}
+.block .meta{font-size:12px;color:var(--muted);margin-top:4px}
+.block.loose{border-style:dashed}
+.block.away::after{content:"OUT";position:absolute;top:8px;right:8px;font:500 10px var(--mono);letter-spacing:.06em;background:var(--ink);color:var(--bg);padding:1px 5px;border-radius:4px}
+.block.dim{opacity:.25}
+.block.hit{box-shadow:0 0 0 2px var(--ink)}
+.block.dragging{opacity:.2}
+.ghost{position:fixed;z-index:50;pointer-events:none;width:160px;box-shadow:0 10px 30px rgba(0,0,0,.18);transform:rotate(-2deg);cursor:grabbing}
+.placeholder{border:1.5px dashed var(--ink);border-radius:10px;min-height:62px}
+.block .found{font-size:12px;margin-top:4px;color:var(--ink);overflow-wrap:anywhere}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.18);z-index:60;display:flex;justify-content:flex-end}
+.sheet{background:var(--bg);width:min(440px,100%);height:100%;overflow:auto;border-left:1px solid var(--ink);
+  padding:calc(18px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 18px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:600px){.scrim{align-items:flex-end}.sheet{height:88%;border-left:0;border-top:1px solid var(--ink);border-radius:16px 16px 0 0}}
+.sheet-top{display:flex;align-items:center;gap:10px}
+.sheet-top .code{font:500 13px var(--mono);border:1px solid var(--ink);border-radius:6px;padding:2px 7px}
+.sheet-top .sp{flex:1}
+.field{display:flex;flex-direction:column;gap:6px}
+.field input,.field textarea,.field select{border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:var(--bg);outline:none;width:100%}
+.field input:focus,.field textarea:focus{border-color:var(--ink)}
+.field textarea{min-height:180px;resize:vertical;line-height:1.5}
+.big{font-size:18px;font-weight:600}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px}
+.months button{font:500 11px var(--mono);border:1px solid var(--line);border-radius:6px;padding:6px 0}
+.months button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.seg button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--ink);border-radius:8px;padding:8px 14px;font-weight:500}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.quiet{border-color:var(--line);color:var(--muted)}
+.small{font-size:12px;color:var(--muted)}
+.log{font-size:13px;display:flex;flex-direction:column;gap:4px}
+.log div{display:flex;gap:8px}
+.log time{font:12px var(--mono);color:var(--muted);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:13px;padding:8px 14px;border-radius:8px;z-index:80;max-width:calc(100% - 32px)}
+code{font-family:var(--mono);font-size:12px;background:var(--wash);padding:1px 4px;border-radius:4px}
+ol.steps{padding-left:20px;margin:0;font-size:14px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Storage Inventory</h1>
+    <button class="status" id="status" type="button"></button>
+    <button class="iconbtn" id="settingsBtn" type="button" aria-label="Settings">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <div class="search"><input id="q" type="search" placeholder="Find an item… (e.g. sleeping bag)" autocomplete="off" aria-label="Search items"></div>
+
+  <section class="season" id="season" aria-label="This season"></section>
+  <section class="zones" id="zones"></section>
+</div>
+
+<script>
+"use strict";
+const REPO = "cwh113/storage-inventory";
+const PATH = "data.json";
+const MONTHS = ["J","F","M","A","M","J","J","A","S","O","N","D"];
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+let state = null;      // data.json contents
+let sha = null;        // GitHub blob sha of data.json
+let dirty = false, saving = false, saveTimer = null, lastError = "";
+let query = "";
+
+const $ = s => document.querySelector(s);
+const el = (tag, props = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === "class") n.className = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else if (k === "text") n.textContent = v;
+    else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null) n.append(c);
+  return n;
+};
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch { return null; } },
+  set(k,v){ try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k,v); } catch {} }
+};
+const token = () => store.get("si_token") || "";
+const who = () => store.get("si_name") || "";
+
+/* ---------- GitHub sync ---------- */
+const b64decode = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")), c => c.charCodeAt(0)));
+const b64encode = s => { const bytes = new TextEncoder().encode(s); let bin = ""; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000)); return btoa(bin); };
+
+async function gh(method, body) {
+  const headers = { "Accept": "application/vnd.github+json" };
+  if (token()) headers.Authorization = "Bearer " + token();
+  if (body) headers["Content-Type"] = "application/json";
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}` + (method === "GET" ? `?t=${Date.now()}` : ""), {
+    method, headers, body: body ? JSON.stringify(body) : undefined, cache: "no-store"
+  });
+  if (!res.ok) { const e = new Error(res.status + ""); e.status = res.status; throw e; }
+  return res.json();
+}
+
+async function load() {
+  try {
+    const j = await gh("GET");
+    sha = j.sha;
+    state = JSON.parse(b64decode(j.content));
+    store.set("si_cache", JSON.stringify({ state, sha }));
+    lastError = "";
+  } catch (e) {
+    let fallback = null;
+    try { const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" }); if (r.ok) fallback = await r.json(); } catch {}
+    const c = store.get("si_cache");
+    if (c && !(fallback && e.status !== 401)) { const p = JSON.parse(c); state = p.state; sha = p.sha; }
+    else if (fallback) { state = fallback; sha = null; }
+    lastError = e.status === 401 ? "Token rejected" : (fallback ? "" : "Offline — showing last copy");
+    if (!state) { $("#zones").replaceChildren(el("p", { class: "empty", text: "Couldn't load the inventory. Check your connection and reload." })); return; }
+  }
+  render();
+}
+
+function queueSave() {
+  dirty = true;
+  store.set("si_cache", JSON.stringify({ state, sha }));
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 1200);
+  renderStatus();
+}
+
+async function save() {
+  if (!dirty || saving) return;
+  if (!token()) { renderStatus(); return; }
+  saving = true; renderStatus();
+  const snapshot = JSON.stringify(state, null, 2) + "\n";
+  try {
+    if (!sha) sha = (await gh("GET")).sha;
+    const j = await gh("PUT", { message: `Update inventory${who() ? " (" + who() + ")" : ""}`, content: b64encode(snapshot), sha });
+    sha = j.content.sha;
+    if (JSON.stringify(state, null, 2) + "\n" === snapshot) dirty = false;
+    lastError = "";
+  } catch (e) {
+    if (e.status === 409 || e.status === 422) {
+      lastError = "";
+      dirty = false;
+      await load();
+      toast("Someone else changed the inventory, so it was reloaded. Redo your last change.");
+    } else lastError = e.status === 401 || e.status === 403 ? "Token can't save" : "Not saved — offline";
+  }
+  saving = false; renderStatus();
+  if (dirty && !lastError) queueSave();
+}
+
+function renderStatus() {
+  const s = $("#status");
+  s.className = "status";
+  if (!token()) { s.textContent = "View only · connect"; s.classList.add("warn"); }
+  else if (lastError) { s.textContent = lastError; s.classList.add("warn"); }
+  else if (saving) s.textContent = "Saving…";
+  else if (dirty) s.textContent = "Unsaved";
+  else s.textContent = "Saved";
+}
+$("#status").addEventListener("click", () => { if (!token() || lastError) openSettings(); });
+window.addEventListener("focus", () => { if (!dirty && !saving && !dragging && !$(".scrim")) load(); });
+
+/* ---------- model helpers ---------- */
+const zoneById = id => state.zones.find(z => z.id === id);
+const blockById = id => state.blocks.find(b => b.id === id);
+const isAway = b => b.zone !== b.home;
+const inSeason = (b, m) => (b.months || []).includes(m);
+function logMove(b, from, to) {
+  state.log.unshift({ t: new Date().toISOString(), id: b.id, code: b.code, from, to, by: who() || undefined });
+  state.log = state.log.slice(0, 200);
+}
+function moveBlock(id, zoneId, index) {
+  const b = blockById(id); if (!b) return;
+  const from = b.zone;
+  const list = state.blocks.filter(x => x.zone === zoneId && x.id !== id);
+  state.blocks = state.blocks.filter(x => x.id !== id);
+  b.zone = zoneId;
+  if (from !== zoneId) { b.movedAt = new Date().toISOString(); logMove(b, from, zoneId); }
+  const anchor = list[index];
+  if (anchor) state.blocks.splice(state.blocks.indexOf(anchor), 0, b);
+  else {
+    const last = list[list.length - 1];
+    state.blocks.splice(last ? state.blocks.indexOf(last) + 1 : state.blocks.length, 0, b);
+  }
+  queueSave(); render();
+  if (from !== zoneId) toast(`${b.code} moved to ${zoneById(zoneId).name}`);
+}
+function nextCode(prefix) {
+  let n = 0;
+  for (const b of state.blocks) { const m = b.code.match(new RegExp("^" + prefix + "-(\\d+)$")); if (m) n = Math.max(n, +m[1]); }
+  return `${prefix}-${n + 1}`;
+}
+const prefixFor = zoneId => ({ unit: "SU", work: "WR", apt: "AP" }[zoneId] || zoneId.slice(0, 2).toUpperCase());
+const shortDate = iso => new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+/* ---------- render ---------- */
+function matches(b) {
+  if (!query) return null;
+  const q = query.toLowerCase();
+  const hits = b.items.filter(i => i.toLowerCase().includes(q));
+  const self = (b.code + " " + b.name + " " + (b.looks || "")).toLowerCase().includes(q);
+  return { ok: self || hits.length > 0, hits };
+}
+
+function blockEl(b) {
+  const m = matches(b);
+  const cls = ["block"];
+  if (b.looks === "Loose") cls.push("loose");
+  if (isAway(b)) cls.push("away");
+  if (m && !m.ok) cls.push("dim");
+  if (m && m.ok) cls.push("hit");
+  const meta = isAway(b) && b.movedAt ? `Out since ${shortDate(b.movedAt)}` : `${b.items.length} item${b.items.length === 1 ? "" : "s"}${b.looks && b.looks !== "Loose" ? " · " + b.looks : ""}`;
+  const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-label": `${b.code} ${b.name}` },
+    el("div", { class: "code", text: b.code }),
+    el("div", { class: "name", text: b.name }),
+    el("div", { class: "meta", text: meta }),
+    m && m.ok && m.hits.length ? el("div", { class: "found", text: "↳ " + m.hits.slice(0, 2).join(", ") }) : null
+  );
+  node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBlock(b.id); } });
+  attachDrag(node);
+  return node;
+}
+
+function render() {
+  if (!state) return;
+  renderStatus();
+  // season panel
+  const now = new Date().getMonth() + 1;
+  const bringOut = state.blocks.filter(b => inSeason(b, now) && !isAway(b) && b.home === "unit");
+  const putBack = state.blocks.filter(b => isAway(b) && (b.months || []).length && !inSeason(b, now));
+  const out = state.blocks.filter(isAway);
+  const chip = b => el("button", { class: "chip", type: "button", onclick: () => openBlock(b.id) }, el("b", { text: b.code }), b.name);
+  $("#season").replaceChildren(
+    el("div", { class: "panel" }, el("h2", {}, "Out right now", el("span", { text: String(out.length) })),
+      out.length ? el("div", { class: "chips" }, out.map(chip)) : el("div", { class: "empty", text: "Everything is where it lives." })),
+    el("div", { class: "panel" }, el("h2", {}, "In season", el("span", { text: MONTH_NAMES[now - 1] })),
+      bringOut.length ? el("div", { class: "chips" }, bringOut.map(chip)) : el("div", { class: "empty", text: "Nothing seasonal left in the unit." })),
+    el("div", { class: "panel" }, el("h2", {}, "Ready to go back", el("span", { text: String(putBack.length) })),
+      putBack.length ? el("div", { class: "chips" }, putBack.map(chip)) : el("div", { class: "empty", text: "Nothing out of season is out." }))
+  );
+  // zones
+  $("#zones").replaceChildren(...state.zones.map(z => {
+    const list = state.blocks.filter(b => b.zone === z.id);
+    return el("section", { class: "zone", "data-zone": z.id },
+      el("div", { class: "zone-head" },
+        el("h3", { text: z.name }),
+        el("span", { class: "label", text: z.note || `${list.length}` }),
+        el("button", { class: "add", type: "button", onclick: () => addBlock(z.id) }, "+ Add")
+      ),
+      el("div", { class: "blocks" }, list.length ? list.map(blockEl) : el("div", { class: "hint", text: "Drag a bin here" }))
+    );
+  }));
+}
+
+$("#q").addEventListener("input", e => { query = e.target.value.trim(); render(); });
+
+/* ---------- drag & drop (mouse + touch) ---------- */
+let dragging = null; // {id, node, ghost, ph, dx, dy, zone, index}
+function attachDrag(node) {
+  node.addEventListener("pointerdown", e => {
+    if (e.button !== 0) return;
+    const start = { x: e.clientX, y: e.clientY }, id = node.dataset.id, pid = e.pointerId;
+    let held = e.pointerType !== "touch", timer = null, started = false;
+    if (!held) timer = setTimeout(() => { held = true; if (navigator.vibrate) navigator.vibrate(10); begin(e); }, 260);
+    const move = ev => {
+      if (ev.pointerId !== pid) return;
+      const d = Math.hypot(ev.clientX - start.x, ev.clientY - start.y);
+      if (!started) {
+        if (!held) { if (d > 8) cleanup(); return; }
+        if (d > 5) begin(ev); else return;
+      }
+      ev.preventDefault();
+      drag(ev.clientX, ev.clientY);
+    };
+    const up = ev => {
+      if (ev.pointerId !== pid) return;
+      const wasStarted = started; cleanup();
+      if (wasStarted) drop(); else if (Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < 8) openBlock(id);
+    };
+    function begin(ev) {
+      if (started) return; started = true;
+      const r = node.getBoundingClientRect();
+      const ghost = node.cloneNode(true); ghost.classList.add("ghost"); ghost.classList.remove("dim");
+      document.body.append(ghost);
+      const ph = el("div", { class: "placeholder" });
+      dragging = { id, node, ghost, ph, dx: start.x - r.left, dy: start.y - r.top, zone: null, index: 0 };
+      node.classList.add("dragging");
+      drag(ev.clientX, ev.clientY);
+    }
+    function cleanup() {
+      clearTimeout(timer);
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", up);
+      document.removeEventListener("pointercancel", up);
+    }
+    document.addEventListener("pointermove", move, { passive: false });
+    document.addEventListener("pointerup", up);
+    document.addEventListener("pointercancel", up);
+  });
+}
+document.addEventListener("touchmove", e => { if (dragging) e.preventDefault(); }, { passive: false });
+
+let scrollRAF = null, lastPt = null;
+function drag(x, y) {
+  const d = dragging; if (!d) return;
+  lastPt = { x, y };
+  d.ghost.style.left = (x - Math.min(d.dx, 150)) + "px";
+  d.ghost.style.top = (y - d.dy) + "px";
+  const target = document.elementFromPoint(x, y);
+  const zoneEl = target && target.closest(".zone");
+  document.querySelectorAll(".zone.over").forEach(z => z !== zoneEl && z.classList.remove("over"));
+  if (!zoneEl) { d.zone = null; d.ph.remove(); return; }
+  zoneEl.classList.add("over");
+  const grid = zoneEl.querySelector(".blocks");
+  zoneEl.querySelector(".hint")?.remove();
+  const kids = [...grid.querySelectorAll(".block:not(.dragging)")];
+  let index = kids.length;
+  for (let i = 0; i < kids.length; i++) {
+    const r = kids[i].getBoundingClientRect();
+    if (y < r.top) { index = i; break; }
+    if (y <= r.bottom && x < r.left + r.width / 2) { index = i; break; }
+  }
+  d.zone = zoneEl.dataset.zone; d.index = index;
+  if (kids[index]) grid.insertBefore(d.ph, kids[index]); else grid.append(d.ph);
+  if (!scrollRAF) scrollRAF = requestAnimationFrame(autoScroll);
+}
+function autoScroll() {
+  scrollRAF = null;
+  if (!dragging || !lastPt) return;
+  const edge = 70, h = window.innerHeight;
+  let dy = 0;
+  if (lastPt.y < edge) dy = -Math.ceil((edge - lastPt.y) / 5);
+  else if (lastPt.y > h - edge) dy = Math.ceil((lastPt.y - (h - edge)) / 5);
+  if (dy) { window.scrollBy(0, dy); drag(lastPt.x, lastPt.y); }
+}
+function drop() {
+  const d = dragging; dragging = null;
+  d.ghost.remove(); d.ph.remove(); d.node.classList.remove("dragging");
+  document.querySelectorAll(".zone.over").forEach(z => z.classList.remove("over"));
+  if (d.zone) moveBlock(d.id, d.zone, d.index); else render();
+}
+
+/* ---------- block sheet ---------- */
+function closeSheet() { $(".scrim")?.remove(); }
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+function sheet(...kids) {
+  closeSheet();
+  const s = el("div", { class: "sheet", role: "dialog", "aria-modal": "true" }, ...kids);
+  const scrim = el("div", { class: "scrim", onclick: e => { if (e.target === scrim) closeSheet(); } }, s);
+  document.body.append(scrim);
+  return s;
+}
+
+function openBlock(id) {
+  const b = blockById(id); if (!b) return;
+  const commit = () => { queueSave(); render(); };
+  const nameIn = el("input", { class: "big", id: "f-name", value: b.name, "aria-label": "Name" });
+  nameIn.addEventListener("change", () => { b.name = nameIn.value.trim() || b.name; commit(); });
+  const codeIn = el("input", { id: "f-code", value: b.code });
+  codeIn.addEventListener("change", () => { b.code = codeIn.value.trim() || b.code; commit(); openBlock(id); });
+  const looksIn = el("input", { id: "f-looks", value: b.looks || "", placeholder: "e.g. Clear tote, blue lid, 27 gal" });
+  looksIn.addEventListener("change", () => { b.looks = looksIn.value.trim(); commit(); });
+  const itemsIn = el("textarea", { id: "f-items", placeholder: "One item per line" });
+  itemsIn.value = b.items.join("\n");
+  itemsIn.addEventListener("change", () => { b.items = itemsIn.value.split("\n").map(s => s.trim()).filter(Boolean); commit(); });
+
+  const where = el("div", { class: "seg" }, state.zones.map(z => el("button", {
+    type: "button", "aria-pressed": String(b.zone === z.id),
+    onclick: () => { moveBlock(b.id, z.id, Infinity); openBlock(id); }
+  }, z.name)));
+  const home = el("div", { class: "seg" }, state.zones.map(z => el("button", {
+    type: "button", "aria-pressed": String(b.home === z.id),
+    onclick: () => { b.home = z.id; commit(); openBlock(id); }
+  }, z.name)));
+  const months = el("div", { class: "months" }, MONTHS.map((m, i) => el("button", {
+    type: "button", title: MONTH_NAMES[i], "aria-label": MONTH_NAMES[i], "aria-pressed": String(inSeason(b, i + 1)),
+    onclick: ev => {
+      const set = new Set(b.months || []); set.has(i + 1) ? set.delete(i + 1) : set.add(i + 1);
+      b.months = [...set].sort((a, c) => a - c); ev.currentTarget.setAttribute("aria-pressed", String(set.has(i + 1))); commit();
+    }
+  }, m)));
+
+  const history = state.log.filter(l => l.id === b.id).slice(0, 6);
+  const del = el("button", { class: "btn quiet", type: "button" }, "Delete");
+  del.addEventListener("click", () => {
+    if (del.dataset.armed) { state.blocks = state.blocks.filter(x => x.id !== b.id); commit(); closeSheet(); toast(`${b.code} deleted`); }
+    else { del.dataset.armed = "1"; del.textContent = "Tap again to delete"; del.classList.remove("quiet"); }
+  });
+
+  const s = sheet(
+    el("div", { class: "sheet-top" }, el("span", { class: "code", text: b.code }), isAway(b) ? el("span", { class: "label", text: "Out" }) : null, el("span", { class: "sp" }),
+      el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
+    el("div", { class: "field" }, nameIn),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Looks like" }), looksIn),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Where it is now" }), where),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Where it lives" }), home),
+    el("div", { class: "field" }, el("span", { class: "label", text: "In season" }), months, el("span", { class: "small", text: "Shows up under “In season” these months, and under “Ready to go back” when it's out after." })),
+    el("div", { class: "field" }, el("span", { class: "label", text: `Contents · ${b.items.length}` }), itemsIn),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Label code" }), codeIn),
+    history.length ? el("div", { class: "field" }, el("span", { class: "label", text: "History" }),
+      el("div", { class: "log" }, history.map(l => el("div", {}, el("time", { text: shortDate(l.t) }), `${zoneById(l.from)?.name || l.from} → ${zoneById(l.to)?.name || l.to}${l.by ? " · " + l.by : ""}`)))) : null,
+    el("div", { class: "row" }, del)
+  );
+  s.querySelector("#f-name")?.blur();
+}
+
+function addBlock(zoneId) {
+  const id = "b" + Date.now().toString(36);
+  const code = nextCode(prefixFor(zoneId));
+  state.blocks.push({ id, code, name: "New bin", looks: "", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null });
+  queueSave(); render(); openBlock(id);
+  setTimeout(() => { const n = $("#f-name"); n && (n.focus(), n.select()); }, 50);
+}
+
+/* ---------- settings ---------- */
+function openSettings() {
+  const tokIn = el("input", { id: "s-token", type: "password", placeholder: "github_pat_…", value: token(), autocomplete: "off" });
+  const nameIn = el("input", { id: "s-name", value: who(), placeholder: "e.g. Chris" });
+  const zoneName = el("input", { id: "s-zone", placeholder: "e.g. Garage, Mom's basement" });
+  sheet(
+    el("div", { class: "sheet-top" }, el("strong", { text: "Settings" }), el("span", { class: "sp" }),
+      el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Your name" }), nameIn, el("span", { class: "small", text: "Shown in move history." })),
+    el("div", { class: "field" }, el("span", { class: "label", text: "GitHub token" }), tokIn,
+      el("span", { class: "small", text: "Needed to save changes. Stored only in this browser." })),
+    el("ol", { class: "steps" },
+      el("li", {}, "On GitHub: Settings → Developer settings → Fine-grained tokens → Generate new token."),
+      el("li", {}, "Repository access: Only select repositories → ", el("code", { text: REPO }), "."),
+      el("li", {}, "Permissions → Contents: Read and write. Generate, then paste it above.")),
+    el("div", { class: "row" },
+      el("button", { class: "btn primary", type: "button", onclick: () => {
+        store.set("si_token", tokIn.value.trim() || null); store.set("si_name", nameIn.value.trim() || null);
+        closeSheet(); lastError = ""; load().then(() => dirty && save()); toast("Settings saved");
+      } }, "Save"),
+      token() ? el("button", { class: "btn quiet", type: "button", onclick: () => { store.set("si_token", null); closeSheet(); renderStatus(); } }, "Remove token") : null),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Add a location" }), zoneName,
+      el("div", { class: "row" }, el("button", { class: "btn", type: "button", onclick: () => {
+        const n = zoneName.value.trim(); if (!n) return;
+        state.zones.push({ id: "z" + Date.now().toString(36), name: n, note: "" }); queueSave(); render(); closeSheet(); toast(`Added ${n}`);
+      } }, "Add location")))
+  );
+}
+$("#settingsBtn").addEventListener("click", openSettings);
+
+/* ---------- misc ---------- */
+let toastTimer;
+function toast(msg) {
+  $(".toast")?.remove(); clearTimeout(toastTimer);
+  const t = el("div", { class: "toast", role: "status", text: msg }); document.body.append(t);
+  toastTimer = setTimeout(() => t.remove(), 2600);
+}
+window.addEventListener("beforeunload", e => { if (dirty && token()) { e.preventDefault(); e.returnValue = ""; } });
+
+load();
+</script>
+</body>
+</html>
