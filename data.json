@@ -322,6 +322,22 @@
       "movedAt": null
     },
     {
+      "id": "bmvy6oeec0",
+      "kind": "loose",
+      "name": "Tennis / Pickleball Bag",
+      "home": "unit",
+      "zone": "unit",
+      "months": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "items": [],
+      "movedAt": "2026-11-01T20:15:55.353Z"
+    },
+    {
       "id": "li14",
       "kind": "loose",
       "name": "Tree Stand",
@@ -420,22 +436,6 @@
       "movedAt": "2026-11-01T18:46:09.153Z"
     },
     {
-      "id": "bmvy6oeec0",
-      "kind": "loose",
-      "name": "Tennis / Pickleball Bag",
-      "home": "unit",
-      "zone": "apt",
-      "months": [
-        5,
-        6,
-        7,
-        8,
-        9
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:48:54.652Z"
-    },
-    {
       "id": "li16",
       "kind": "loose",
       "name": "Hunting Pack",
@@ -517,6 +517,13 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-01T20:15:55.353Z",
+      "id": "bmvy6oeec0",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T20:15:51.077Z",
       "id": "bmvy6tpa7",
