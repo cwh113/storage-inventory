@@ -89,6 +89,17 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .item.ghost{width:auto}
 .placeholder.ph-item{min-height:30px;width:90px;border-radius:999px}
 .items .none{font-size:13px;color:var(--faint)}
+.block.open{grid-column:1/-1}
+.bin-items{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.bin-items .none{font-size:13px;color:var(--faint)}
+.item.in-bin::before{display:none}
+.item.in-bin{padding:5px 11px}
+.block .edit{display:inline-block;margin-top:10px;font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.block .edit:hover{color:var(--ink)}
+.block.drop-on{background:var(--wash);box-shadow:0 0 0 2px var(--ink)}
+.block .caret{display:inline-block;transition:transform .15s}.block.open .caret{transform:rotate(180deg)}
+.ghost .bin-items,.ghost .edit{display:none}
+.ghost.block{width:160px}
 .block .found{font-size:12px;margin-top:4px;color:var(--ink);overflow-wrap:anywhere}
 
 /* sheet */
@@ -264,22 +275,50 @@ function logMove(b, from, to) {
   state.log.unshift({ t: new Date().toISOString(), id: b.id, code: b.code, from, to, by: who() || undefined });
   state.log = state.log.slice(0, 200);
 }
-function moveBlock(id, zoneId, index) {
-  const b = blockById(id); if (!b) return;
-  const from = b.zone;
-  const list = state.blocks.filter(x => x.zone === zoneId && x.id !== id && isLoose(x) === isLoose(b));
-  state.blocks = state.blocks.filter(x => x.id !== id);
+function place(b, zoneId, index) {
+  const list = state.blocks.filter(x => x.zone === zoneId && x.id !== b.id && isLoose(x) === isLoose(b));
+  state.blocks = state.blocks.filter(x => x.id !== b.id);
   b.zone = zoneId;
-  if (from !== zoneId) { b.movedAt = new Date().toISOString(); logMove(b, from, zoneId); }
   const anchor = list[index];
   if (anchor) state.blocks.splice(state.blocks.indexOf(anchor), 0, b);
   else {
     const last = list[list.length - 1];
     state.blocks.splice(last ? state.blocks.indexOf(last) + 1 : state.blocks.length, 0, b);
   }
+}
+function moveBlock(id, zoneId, index) {
+  const b = blockById(id); if (!b) return;
+  const from = b.zone;
+  place(b, zoneId, index);
+  if (from !== zoneId) { b.movedAt = new Date().toISOString(); logMove(b, from, zoneId); }
   queueSave(); render();
   if (from !== zoneId) toast(`${label(b)} moved to ${zoneById(zoneId).name}`);
 }
+function binItemToBin(fromId, idx, toId) {
+  const A = blockById(fromId), B = blockById(toId); if (!A || !B || A === B) return render();
+  const [name] = A.items.splice(idx, 1); if (name == null) return render();
+  B.items.push(name);
+  state.log.unshift({ t: new Date().toISOString(), id: B.id, code: name, from: A.code, to: B.code, by: who() || undefined });
+  queueSave(); render(); toast(`${name} moved to ${B.code}`);
+}
+function binItemToLoose(fromId, idx, zoneId, index) {
+  const A = blockById(fromId); if (!A) return render();
+  const [name] = A.items.splice(idx, 1); if (name == null) return render();
+  const b = { id: "b" + Date.now().toString(36), kind: "loose", name, home: A.home, zone: zoneId, from: A.id, months: [...(A.months || [])], items: [], movedAt: new Date().toISOString() };
+  state.blocks.push(b); place(b, zoneId, index);
+  state.log.unshift({ t: b.movedAt, id: b.id, code: name, from: A.code, to: zoneId, by: who() || undefined });
+  queueSave(); render(); toast(`${name} taken out of ${A.code}`);
+}
+function looseToBin(id, binId) {
+  const b = blockById(id), B = blockById(binId); if (!b || !B) return render();
+  state.blocks = state.blocks.filter(x => x.id !== id);
+  B.items.push(b.name);
+  state.log.unshift({ t: new Date().toISOString(), id: B.id, code: b.name, from: b.zone, to: B.code, by: who() || undefined });
+  queueSave(); render(); toast(`${b.name} put in ${B.code}`);
+}
+const openBins = new Set(JSON.parse(store.get("si_open") || "[]"));
+function toggleBin(id) { openBins.has(id) ? openBins.delete(id) : openBins.add(id); store.set("si_open", JSON.stringify([...openBins])); render(); }
+
 function nextCode(prefix) {
   let n = 0;
   for (const b of state.blocks) { const m = b.code.match(new RegExp("^" + prefix + "-(\\d+)$")); if (m) n = Math.max(n, +m[1]); }
@@ -305,7 +344,15 @@ function itemEl(b) {
   if (m && m.ok) cls.push("hit");
   const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-label": b.name + (isAway(b) ? ", out" : "") }, b.name);
   node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBlock(b.id); } });
-  attachDrag(node);
+  attachDrag(node, { type: "loose", id: b.id }, () => openBlock(b.id));
+  return node;
+}
+function binItemEl(bin, name, idx) {
+  const q = query.toLowerCase();
+  const cls = "item in-bin" + (q ? (name.toLowerCase().includes(q) ? " hit" : " dim") : "");
+  const node = el("div", { class: cls, role: "button", tabindex: "0", "aria-label": `${name}, in ${bin.code}` }, name);
+  node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); openBinItem(bin.id, idx); } });
+  attachDrag(node, { type: "binitem", bin: bin.id, idx }, () => openBinItem(bin.id, idx));
   return node;
 }
 
@@ -317,15 +364,22 @@ function blockEl(b) {
   if (isAway(b)) cls.push("away");
   if (m && !m.ok) cls.push("dim");
   if (m && m.ok) cls.push("hit");
+  const open = openBins.has(b.id) || (m && m.ok && m.hits.length > 0);
+  if (open) cls.push("open");
   const meta = isAway(b) && b.movedAt ? `Out since ${shortDate(b.movedAt)}` : `${b.items.length} item${b.items.length === 1 ? "" : "s"}${b.looks && b.looks !== "Loose" ? " · " + b.looks : ""}`;
-  const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-label": `${b.code} ${b.name}` },
+  const edit = el("button", { class: "edit", type: "button" }, "Edit bin");
+  edit.addEventListener("pointerdown", e => e.stopPropagation());
+  edit.addEventListener("click", e => { e.stopPropagation(); openBlock(b.id); });
+  const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-expanded": String(!!open), "aria-label": `${b.code} ${b.name}` },
     el("div", { class: "code", text: b.code }),
     el("div", { class: "name", text: b.name }),
-    el("div", { class: "meta", text: meta }),
-    m && m.ok && m.hits.length ? el("div", { class: "found", text: "↳ " + m.hits.slice(0, 2).join(", ") }) : null
+    el("div", { class: "meta" }, meta + " ", el("span", { class: "caret", "aria-hidden": "true", text: "▾" })),
+    !open && m && m.ok && m.hits.length ? el("div", { class: "found", text: "↳ " + m.hits.slice(0, 2).join(", ") }) : null,
+    open ? el("div", { class: "bin-items" }, b.items.length ? b.items.map((name, i) => binItemEl(b, name, i)) : el("span", { class: "none", text: "Empty — drag items here" })) : null,
+    open ? edit : null
   );
-  node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBlock(b.id); } });
-  attachDrag(node);
+  node.addEventListener("keydown", e => { if (e.target === node && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggleBin(b.id); } });
+  attachDrag(node, { type: "bin", id: b.id }, () => toggleBin(b.id));
   return node;
 }
 
@@ -369,10 +423,7 @@ function render() {
 function renderDest() {
   const sel = $("#qa-dest");
   const keep = sel.value || store.get("si_dest") || "";
-  sel.replaceChildren(...state.zones.map(z => el("optgroup", { label: z.name },
-    el("option", { value: "loose:" + z.id }, `Loose in ${z.name}`),
-    state.blocks.filter(b => b.zone === z.id && !isLoose(b)).map(b => el("option", { value: "bin:" + b.id }, `${b.code} · ${b.name}`))
-  )));
+  destOptions(sel);
   if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
 }
 $("#qa-dest").addEventListener("change", e => store.set("si_dest", e.target.value));
@@ -397,11 +448,13 @@ $("#quick").addEventListener("submit", e => {
 $("#q").addEventListener("input", e => { query = e.target.value.trim(); render(); });
 
 /* ---------- drag & drop (mouse + touch) ---------- */
-let dragging = null; // {id, node, ghost, ph, dx, dy, zone, index}
-function attachDrag(node) {
+// payload: {type:"bin", id} | {type:"loose", id} | {type:"binitem", bin, idx}
+let dragging = null;
+function attachDrag(node, payload, onTap) {
   node.addEventListener("pointerdown", e => {
-    if (e.button !== 0) return;
-    const start = { x: e.clientX, y: e.clientY }, id = node.dataset.id, pid = e.pointerId;
+    if (e.button !== 0 || dragging) return;
+    e.stopPropagation(); // a tag inside a bin shouldn't also grab the bin
+    const start = { x: e.clientX, y: e.clientY }, pid = e.pointerId;
     let held = e.pointerType !== "touch", timer = null, started = false;
     if (!held) timer = setTimeout(() => { held = true; if (navigator.vibrate) navigator.vibrate(10); begin(e); }, 260);
     const move = ev => {
@@ -417,15 +470,15 @@ function attachDrag(node) {
     const up = ev => {
       if (ev.pointerId !== pid) return;
       const wasStarted = started; cleanup();
-      if (wasStarted) drop(); else if (Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < 8) openBlock(id);
+      if (wasStarted) drop(); else if (ev.type === "pointerup" && Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < 8) onTap();
     };
     function begin(ev) {
       if (started) return; started = true;
       const r = node.getBoundingClientRect();
-      const ghost = node.cloneNode(true); ghost.classList.add("ghost"); ghost.classList.remove("dim");
+      const ghost = node.cloneNode(true); ghost.classList.add("ghost"); ghost.classList.remove("dim", "open", "hit");
       document.body.append(ghost);
-      const ph = el("div", { class: "placeholder" + (node.classList.contains("item") ? " ph-item" : "") });
-      dragging = { id, node, ghost, ph, dx: start.x - r.left, dy: start.y - r.top, zone: null, index: 0 };
+      const ph = el("div", { class: "placeholder" + (payload.type === "bin" ? "" : " ph-item") });
+      dragging = { payload, node, ghost, ph, dx: Math.min(start.x - r.left, 150), dy: Math.min(start.y - r.top, 40), target: null };
       node.classList.add("dragging");
       drag(ev.clientX, ev.clientY);
     }
@@ -443,29 +496,45 @@ function attachDrag(node) {
 document.addEventListener("touchmove", e => { if (dragging) e.preventDefault(); }, { passive: false });
 
 let scrollRAF = null, lastPt = null;
+function clearMarks(keepZone, keepBin) {
+  document.querySelectorAll(".zone.over").forEach(z => z !== keepZone && z.classList.remove("over"));
+  document.querySelectorAll(".block.drop-on").forEach(b => b !== keepBin && b.classList.remove("drop-on"));
+}
 function drag(x, y) {
   const d = dragging; if (!d) return;
   lastPt = { x, y };
   d.ghost.style.left = (x - Math.min(d.dx, d.ghost.offsetWidth - 10)) + "px";
   d.ghost.style.top = (y - d.dy) + "px";
+  if (!scrollRAF) scrollRAF = requestAnimationFrame(autoScroll);
+  const p = d.payload;
   const target = document.elementFromPoint(x, y);
+  // items (loose or from a bin) can be dropped onto a bin
+  if (p.type !== "bin") {
+    const binEl = target && target.closest(".block:not(.ghost)");
+    if (binEl) {
+      d.ph.remove();
+      if (p.type === "binitem" && binEl.dataset.id === p.bin) { d.target = null; clearMarks(); return; }
+      clearMarks(null, binEl); binEl.classList.add("drop-on");
+      d.target = { kind: "bin", id: binEl.dataset.id };
+      return;
+    }
+  }
   const zoneEl = target && target.closest(".zone");
-  document.querySelectorAll(".zone.over").forEach(z => z !== zoneEl && z.classList.remove("over"));
-  if (!zoneEl) { d.zone = null; d.ph.remove(); return; }
+  clearMarks(zoneEl);
+  if (!zoneEl) { d.target = null; d.ph.remove(); return; }
   zoneEl.classList.add("over");
-  const item = d.node.classList.contains("item");
-  const grid = zoneEl.querySelector(item ? ".items" : ".blocks");
-  zoneEl.querySelector(item ? ".items .none" : ".hint")?.remove();
-  const kids = [...grid.querySelectorAll(item ? ".item:not(.dragging)" : ".block:not(.dragging)")];
+  const isBin = p.type === "bin";
+  const grid = zoneEl.querySelector(isBin ? ".blocks" : ".items");
+  zoneEl.querySelector(isBin ? ".hint" : ".items .none")?.remove();
+  const kids = [...grid.querySelectorAll(isBin ? ":scope > .block:not(.dragging)" : ":scope > .item:not(.dragging)")];
   let index = kids.length;
   for (let i = 0; i < kids.length; i++) {
     const r = kids[i].getBoundingClientRect();
     if (y < r.top) { index = i; break; }
     if (y <= r.bottom && x < r.left + r.width / 2) { index = i; break; }
   }
-  d.zone = zoneEl.dataset.zone; d.index = index;
+  d.target = { kind: "zone", zone: zoneEl.dataset.zone, index };
   if (kids[index]) grid.insertBefore(d.ph, kids[index]); else grid.append(d.ph);
-  if (!scrollRAF) scrollRAF = requestAnimationFrame(autoScroll);
 }
 function autoScroll() {
   scrollRAF = null;
@@ -479,8 +548,12 @@ function autoScroll() {
 function drop() {
   const d = dragging; dragging = null;
   d.ghost.remove(); d.ph.remove(); d.node.classList.remove("dragging");
-  document.querySelectorAll(".zone.over").forEach(z => z.classList.remove("over"));
-  if (d.zone) moveBlock(d.id, d.zone, d.index); else render();
+  clearMarks();
+  const p = d.payload, t = d.target;
+  if (!t) return render();
+  if (p.type === "bin") return t.kind === "zone" ? moveBlock(p.id, t.zone, t.index) : render();
+  if (p.type === "loose") return t.kind === "bin" ? looseToBin(p.id, t.id) : moveBlock(p.id, t.zone, t.index);
+  if (p.type === "binitem") return t.kind === "bin" ? binItemToBin(p.bin, p.idx, t.id) : binItemToLoose(p.bin, p.idx, t.zone, t.index);
 }
 
 /* ---------- block sheet ---------- */
@@ -539,12 +612,47 @@ function openBlock(id) {
     el("div", { class: "field" }, el("span", { class: "label", text: "Where it lives" }), home),
     el("div", { class: "field" }, el("span", { class: "label", text: "In season" }), months, el("span", { class: "small", text: "Shows up under “In season” these months, and under “Ready to go back” when it's out after." })),
     isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: `Contents · ${b.items.length}` }), itemsIn),
+    isLoose(b) && b.from && blockById(b.from) ? el("div", { class: "row" }, el("button", { class: "btn", type: "button", onclick: () => { closeSheet(); looseToBin(b.id, b.from); } }, `Put back in ${blockById(b.from).code}`)) : null,
     isLoose(b) ? null : el("div", { class: "field" }, el("span", { class: "label", text: "Label code" }), codeIn),
     history.length ? el("div", { class: "field" }, el("span", { class: "label", text: "History" }),
       el("div", { class: "log" }, history.map(l => el("div", {}, el("time", { text: shortDate(l.t) }), `${zoneById(l.from)?.name || l.from} → ${zoneById(l.to)?.name || l.to}${l.by ? " · " + l.by : ""}`)))) : null,
     el("div", { class: "row" }, del)
   );
   s.querySelector("#f-name")?.blur();
+}
+
+function destOptions(sel, { excludeBin, current } = {}) {
+  sel.replaceChildren(...state.zones.map(z => el("optgroup", { label: z.name },
+    el("option", { value: "loose:" + z.id }, `Loose in ${z.name}`),
+    state.blocks.filter(b => b.zone === z.id && !isLoose(b) && b.id !== excludeBin).map(b => el("option", { value: "bin:" + b.id }, `${b.code} · ${b.name}`))
+  )));
+  if (current) sel.value = current;
+}
+function openBinItem(binId, idx) {
+  const bin = blockById(binId); if (!bin || bin.items[idx] == null) return;
+  const nameIn = el("input", { class: "big", id: "fi-name", value: bin.items[idx], "aria-label": "Item name" });
+  nameIn.addEventListener("change", () => { const v = nameIn.value.trim(); if (v) { bin.items[idx] = v; queueSave(); render(); } });
+  const dest = el("select", { id: "fi-dest", "aria-label": "Move to" });
+  destOptions(dest, { excludeBin: bin.id });
+  dest.value = "";
+  dest.prepend(el("option", { value: "", disabled: true, selected: true }, "Choose a bin or area…"));
+  const del = el("button", { class: "btn quiet", type: "button" }, "Delete item");
+  del.addEventListener("click", () => {
+    if (del.dataset.armed) { const [n] = bin.items.splice(idx, 1); queueSave(); render(); closeSheet(); toast(`${n} deleted`); }
+    else { del.dataset.armed = "1"; del.textContent = "Tap again to delete"; del.classList.remove("quiet"); }
+  });
+  sheet(
+    el("div", { class: "sheet-top" }, el("span", { class: "label", text: `In ${bin.code} · ${bin.name}` }), el("span", { class: "sp" }),
+      el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
+    el("div", { class: "field" }, nameIn),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Move to" }), dest,
+      el("div", { class: "row" }, el("button", { class: "btn primary", type: "button", onclick: () => {
+        const [k, ref] = dest.value.split(":"); if (!k) return;
+        closeSheet();
+        if (k === "bin") binItemToBin(bin.id, idx, ref); else binItemToLoose(bin.id, idx, ref, Infinity);
+      } }, "Move"))),
+    el("div", { class: "row" }, del)
+  );
 }
 
 function addBlock(zoneId, loose = false) {
