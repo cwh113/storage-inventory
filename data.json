@@ -482,6 +482,16 @@
       ],
       "items": [],
       "movedAt": "2026-11-01T18:54:15.111Z"
+    },
+    {
+      "id": "bmvy6w63b",
+      "kind": "loose",
+      "name": "New item",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
