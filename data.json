@@ -440,21 +440,6 @@
       "movedAt": null
     },
     {
-      "id": "bmvy6kzcx",
-      "kind": "loose",
-      "name": "Boo the Ghost",
-      "home": "unit",
-      "zone": "zmvy6vbql",
-      "from": "su3",
-      "months": [
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-16T02:58:43.231Z"
-    },
-    {
       "id": "li16",
       "kind": "loose",
       "name": "Hunting Pack",
@@ -561,6 +546,21 @@
       "movedAt": null
     },
     {
+      "id": "bmvy6kzcx",
+      "kind": "loose",
+      "name": "Boo the Ghost",
+      "home": "unit",
+      "zone": "apt",
+      "from": "su3",
+      "months": [
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-16T02:58:46.059Z"
+    },
+    {
       "id": "bmvy9u47i0",
       "kind": "loose",
       "name": "Coffee Maker",
@@ -572,6 +572,13 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-16T02:58:46.059Z",
+      "id": "bmvy6kzcx",
+      "from": "zmvy6vbql",
+      "to": "apt",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-16T02:58:43.231Z",
       "id": "bmvy6kzcx",
