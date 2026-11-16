@@ -440,6 +440,21 @@
       "movedAt": null
     },
     {
+      "id": "bmvy6kzcx",
+      "kind": "loose",
+      "name": "Boo the Ghost",
+      "home": "unit",
+      "zone": "zmvy6vbql",
+      "from": "su3",
+      "months": [
+        10,
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-16T02:58:43.231Z"
+    },
+    {
       "id": "li16",
       "kind": "loose",
       "name": "Hunting Pack",
@@ -516,21 +531,6 @@
       "movedAt": "2026-11-01T20:16:57.095Z"
     },
     {
-      "id": "bmvy6kzcx",
-      "kind": "loose",
-      "name": "Boo the Ghost",
-      "home": "unit",
-      "zone": "apt",
-      "from": "su3",
-      "months": [
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-01T18:46:09.153Z"
-    },
-    {
       "id": "bmvy9t6630",
       "kind": "loose",
       "name": "Plant Pots",
@@ -572,6 +572,13 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-16T02:58:43.231Z",
+      "id": "bmvy6kzcx",
+      "from": "apt",
+      "to": "zmvy6vbql",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-01T20:16:57.095Z",
       "id": "bmvy9tr0n",
