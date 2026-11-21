@@ -569,6 +569,17 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmwqwy603",
+      "code": "AP-1",
+      "name": "New bin",
+      "looks": "",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
