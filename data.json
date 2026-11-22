@@ -593,6 +593,16 @@
         "Fireplace Gloves"
       ],
       "movedAt": null
+    },
+    {
+      "id": "bmws28sc6",
+      "kind": "loose",
+      "name": "New item",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
