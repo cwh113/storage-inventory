@@ -547,6 +547,26 @@
       "movedAt": null
     },
     {
+      "id": "bmws2ig7q",
+      "kind": "loose",
+      "name": "Green Blanket",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:31:45.974Z"
+    },
+    {
+      "id": "bmws29ri4",
+      "kind": "loose",
+      "name": "Cake Stand",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:31:51.764Z"
+    },
+    {
       "id": "bmvy6kzcx",
       "kind": "loose",
       "name": "Boo the Ghost",
@@ -626,16 +646,6 @@
       "movedAt": null
     },
     {
-      "id": "bmws29ri4",
-      "kind": "loose",
-      "name": "Cake Stand",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
       "id": "bmws2i737",
       "kind": "loose",
       "name": "Pots and Pans",
@@ -646,29 +656,9 @@
       "movedAt": null
     },
     {
-      "id": "bmws2ig7q",
-      "kind": "loose",
-      "name": "Green Blanket",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
       "id": "bmws2psd1",
       "kind": "loose",
       "name": "Tall Lamp",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "bmws2q3zw",
-      "kind": "loose",
-      "name": "Black Side Table",
       "home": "unit",
       "zone": "apt",
       "months": [],
@@ -687,6 +677,20 @@
     }
   ],
   "log": [
+    {
+      "t": "2026-11-22T17:31:51.764Z",
+      "id": "bmws29ri4",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:31:45.976Z",
+      "id": "bmws2ig7q",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-16T02:58:46.059Z",
       "id": "bmvy6kzcx",
