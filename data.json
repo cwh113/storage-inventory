@@ -194,7 +194,8 @@
         "Metal Drink Container Bowl",
         "Black Side Table",
         "Picture Frames",
-        "Fireplace Gloves"
+        "Fireplace Gloves",
+        "Boo the Ghost"
       ],
       "movedAt": "2026-11-01T20:15:48.031Z"
     },
@@ -214,6 +215,28 @@
         "Ralph Lauren Box (Empty)"
       ],
       "movedAt": "2026-11-01T20:15:51.077Z"
+    },
+    {
+      "id": "bmwqwy603",
+      "code": "AP-1",
+      "name": "Cardboard Box",
+      "looks": "",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [
+        "Ralph Lauren Boxes",
+        "Waterford Vase Box",
+        "Wine Holder",
+        "Jute For Dining Chairs",
+        "North Face Backpacks",
+        "Round Cutting Board",
+        "Green Wrapping Paper",
+        "Balloons",
+        "Picture Frames",
+        "Teavana Strainer"
+      ],
+      "movedAt": "2026-11-22T17:35:59.761Z"
     },
     {
       "id": "li1",
@@ -629,21 +652,6 @@
       "movedAt": "2026-11-22T17:32:20.268Z"
     },
     {
-      "id": "bmvy6kzcx",
-      "kind": "loose",
-      "name": "Boo the Ghost",
-      "home": "unit",
-      "zone": "apt",
-      "from": "su3",
-      "months": [
-        10,
-        11,
-        12
-      ],
-      "items": [],
-      "movedAt": "2026-11-16T02:58:46.059Z"
-    },
-    {
       "id": "bmvy9u47i0",
       "kind": "loose",
       "name": "Coffee Maker",
@@ -652,31 +660,40 @@
       "months": [],
       "items": [],
       "movedAt": null
-    },
-    {
-      "id": "bmwqwy603",
-      "code": "AP-1",
-      "name": "Cardboard Box",
-      "looks": "",
-      "home": "apt",
-      "zone": "apt",
-      "months": [],
-      "items": [
-        "Ralph Lauren Boxes",
-        "Waterford Vase Box",
-        "Wine Holder",
-        "Jute For Dining Chairs",
-        "North Face Backpacks",
-        "Round Cutting Board",
-        "Green Wrapping Paper",
-        "Balloons",
-        "Picture Frames",
-        "Teavana Strainer"
-      ],
-      "movedAt": null
     }
   ],
   "log": [
+    {
+      "t": "2026-11-22T17:35:59.762Z",
+      "id": "bmwqwy603",
+      "code": "AP-1",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:33:32.673Z",
+      "id": "su6",
+      "code": "Boo the Ghost",
+      "from": "SU-3",
+      "to": "SU-6",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:33:15.184Z",
+      "id": "su3",
+      "code": "Boo the Ghost",
+      "from": "unit",
+      "to": "SU-3",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:33:10.024Z",
+      "id": "bmvy6kzcx",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-22T17:32:58.308Z",
       "id": "su6",
