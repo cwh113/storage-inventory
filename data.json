@@ -635,17 +635,6 @@
       "movedAt": null
     },
     {
-      "id": "bmws2a4lj",
-      "code": "AP-3",
-      "name": "New bin",
-      "looks": "",
-      "home": "apt",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
       "id": "bmws2i737",
       "kind": "loose",
       "name": "Pots and Pans",
