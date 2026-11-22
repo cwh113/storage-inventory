@@ -614,6 +614,16 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmws296ib",
+      "kind": "loose",
+      "name": "New item",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
