@@ -603,6 +603,17 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmws29422",
+      "code": "AP-2",
+      "name": "New bin",
+      "looks": "",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
