@@ -7,6 +7,8 @@ A one-page app for tracking what's in our storage unit, what's in the work room,
 - **Tap a bin** to edit its name, what it looks like, its contents, and which months it's in season.
 - **In season / Ready to go back** use those months to show what to pull out and what to return.
 - **Search** finds which bin an item is in.
+- **+ Add items** (top of the page) adds one or several items (comma-separated) to a bin, loose in a location, or a new bin, then asks whether to add another.
+- **Colors = where things live.** Each location has a color (change it in Settings). Bins and items carry their home's color wherever they go; anything not in its home shows a colored "→ Home" tag, and the bar at the top counts what's out of place.
 
 ## Saving
 

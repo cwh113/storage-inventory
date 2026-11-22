@@ -22,6 +22,7 @@
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-font-smoothing:antialiased;
   padding:env(safe-area-inset-top,0) max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px))}
@@ -41,34 +42,40 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 14px;background:var(--bg);outline:none}
 .search input:focus{border-color:var(--ink)}
 
-.quick{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
-.quick input,.quick select{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);outline:none;min-width:0}
-.quick input{flex:3 1 220px}.quick select{flex:2 1 180px;max-width:100%}
-.quick input:focus,.quick select:focus{border-color:var(--ink)}
-.quick .btn{flex:0 0 auto;border-radius:10px}
+.addbar{margin:14px 0 0}
+.addbtn{width:100%;background:var(--ink);color:var(--bg);border-radius:12px;padding:13px 16px;font-weight:600;font-size:16px}
+.awaybar{margin:10px 0 0}
+.awaybtn{width:100%;text-align:left;border:1.5px solid var(--ink);border-radius:10px;padding:9px 12px;font-size:14px;font-weight:500;display:flex;gap:8px;align-items:center}
+.awaybtn[aria-pressed="true"]{background:var(--wash)}
+.awaybtn .sp{flex:1}.awaybtn .small{text-decoration:underline;text-underline-offset:2px}
+.awaybtn.ok{border-color:var(--line);color:var(--muted);font-weight:400;cursor:default}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--sw);flex:none;vertical-align:middle}
+.tag{display:inline-block;font:600 10px var(--mono);letter-spacing:.03em;background:var(--hc);color:var(--hct,#fff);padding:2px 6px;border-radius:4px;white-space:nowrap;line-height:1.3}
 .label{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
 .empty{font-size:13px;color:var(--faint)}
 
 /* zones */
 .zones{display:grid;gap:14px;margin-top:18px}
-.zone{border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0;transition:border-color .12s,background .12s}
-.zone.over{border-color:var(--ink);background:var(--wash)}
+.zone{border:1px solid var(--line);border-left:6px solid var(--zc);border-radius:14px;padding:12px;min-width:0;transition:border-color .12s,background .12s}
+.zone.over{border-color:var(--ink);border-left-color:var(--zc);background:var(--wash)}
 .zone-head{display:flex;align-items:baseline;gap:10px;margin:2px 2px 10px}
-.zone-head h3{margin:0;font-size:16px;font-weight:600}
+.zone-head h3{margin:0;font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.zone-head h3 .swatch{--sw:var(--zc);width:12px;height:12px}
 .zone-head .label{flex:1}
 .zone-head .add{font-size:13px;color:var(--muted)}
 .zone-head .add:hover{color:var(--ink)}
 .blocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;min-height:64px}
 .zone .hint{grid-column:1/-1;font-size:13px;color:var(--faint);padding:18px 4px;text-align:center;border:1px dashed var(--line);border-radius:10px}
 
-.block{position:relative;border:1px solid var(--ink);border-radius:10px;padding:9px 10px 10px;background:var(--bg);
+.block{position:relative;border:1px solid var(--ink);border-left:6px solid var(--hc);border-radius:10px;padding:9px 10px 10px;background:var(--bg);
   user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:grab;min-width:0;text-align:left;width:100%}
+.block .top{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .block .code{font:500 12px var(--mono)}
 .block .name{font-weight:500;font-size:14px;line-height:1.25;margin-top:2px;overflow-wrap:anywhere}
 .block .meta{font-size:12px;color:var(--muted);margin-top:4px}
 .block.loose{border-style:dashed}
-.block.away::after{content:"OUT";position:absolute;top:8px;right:8px;font:500 10px var(--mono);letter-spacing:.06em;background:var(--ink);color:var(--bg);padding:1px 5px;border-radius:4px}
+.block.away{border:2px solid var(--hc);border-left-width:6px;background:color-mix(in srgb,var(--hc) 9%,var(--bg))}
 .block.dim{opacity:.25}
 .block.hit{box-shadow:0 0 0 2px var(--ink)}
 .block.dragging{opacity:.2}
@@ -78,11 +85,9 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .items>.label{width:100%;margin-bottom:2px}
 .item{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1.2;padding:6px 11px 6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--bg);
   user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:grab;max-width:100%}
-.item::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--faint);flex:none}
+.item::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--hc);flex:none}
 .item:hover{border-color:var(--ink)}
-.item.away{border-color:var(--ink)}
-.item.away::before{background:var(--ink)}
-.item.away::after{content:"out";font:500 10px var(--mono);color:var(--muted)}
+.item.away{border:2px solid var(--hc);background:color-mix(in srgb,var(--hc) 9%,var(--bg));padding:5px 6px 5px 8px}
 .item.dim{opacity:.25}.item.hit{box-shadow:0 0 0 2px var(--ink);border-color:var(--ink)}
 .item.dragging{opacity:.2}
 .item.ghost{width:auto}
@@ -91,8 +96,8 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .block.open{grid-column:1/-1}
 .bin-items{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .bin-items .none{font-size:13px;color:var(--faint)}
-.item.in-bin::before{display:none}
-.item.in-bin{padding:5px 11px}
+.item.in-bin{padding:5px 11px 5px 8px}
+.item.in-bin.away{padding:4px 6px 4px 7px}
 .block .edit{display:inline-block;margin-top:10px;font-size:12px;color:var(--muted);text-decoration:underline;text-underline-offset:2px}
 .block .edit:hover{color:var(--ink)}
 .block.drop-on{background:var(--wash);box-shadow:0 0 0 2px var(--ink)}
@@ -117,6 +122,12 @@ h1{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0;flex:1}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg button{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px}
 .seg button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.seg button{display:inline-flex;align-items:center;gap:6px}
+.colors{display:flex;flex-direction:column;gap:6px}
+.colors label{display:flex;align-items:center;gap:10px;font-size:14px}
+.colors input[type=color]{width:38px;height:30px;padding:0;border:1px solid var(--line);border-radius:6px;background:none}
+.done{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.done .big{font-size:17px}
 .row{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:1px solid var(--ink);border-radius:8px;padding:8px 14px;font-weight:500}
 .btn.primary{background:var(--ink);color:var(--bg)}
@@ -141,12 +152,9 @@ ol.steps{padding-left:20px;margin:0;font-size:14px;display:flex;flex-direction:c
     </button>
   </header>
 
+  <div class="addbar"><button class="addbtn" id="addBtn" type="button">+ Add items</button></div>
+  <div class="awaybar" id="awaybar"></div>
   <div class="search"><input id="q" type="search" placeholder="Find an item… (e.g. sleeping bag)" autocomplete="off" aria-label="Search items"></div>
-  <form class="quick" id="quick" autocomplete="off">
-    <input id="qa-name" placeholder="Add items… (separate several with commas)" aria-label="Item to add">
-    <select id="qa-dest" aria-label="Where it goes"></select>
-    <button class="btn primary" type="submit">Add</button>
-  </form>
 
   <section class="zones" id="zones"></section>
 </div>
@@ -162,6 +170,7 @@ let state = null;      // data.json contents
 let sha = null;        // GitHub blob sha of data.json
 let dirty = false, saving = false, saveTimer = null, lastError = "";
 let query = "";
+let awayOnly = false;   // "out of place" filter
 
 const $ = s => document.querySelector(s);
 const el = (tag, props = {}, ...kids) => {
@@ -213,7 +222,20 @@ async function load() {
     lastError = e.status === 401 ? "Token rejected" : (fallback ? "" : "Offline — showing last copy");
     if (!state) { $("#zones").replaceChildren(el("p", { class: "empty", text: "Couldn't load the inventory. Check your connection and reload." })); return; }
   }
+  migrate();
   render();
+}
+
+// Older data stored bin contents as plain names and locations had no color.
+// Bin items become {name, home}; existing ones keep their bin's home.
+const PALETTE = ["#1d4ed8", "#c2410c", "#15803d", "#6d28d9", "#be185d", "#0e7490", "#a16207", "#475569"];
+function migrate() {
+  const used = new Set(state.zones.map(z => z.color).filter(Boolean));
+  for (const z of state.zones) if (!z.color) { z.color = PALETTE.find(c => !used.has(c)) || PALETTE[state.zones.indexOf(z) % PALETTE.length]; used.add(z.color); }
+  for (const b of state.blocks) {
+    if (!Array.isArray(b.items)) b.items = [];
+    if (!isLoose(b)) b.items = b.items.map(i => typeof i === "string" ? { name: i, home: b.home } : { ...i, home: i.home || b.home });
+  }
 }
 
 function queueSave() {
@@ -264,6 +286,22 @@ const zoneById = id => state.zones.find(z => z.id === id);
 const blockById = id => state.blocks.find(b => b.id === id);
 const isAway = b => b.zone !== b.home;
 const isLoose = b => b.kind === "loose";
+// An item in a bin is out of place when its home doesn't match the bin's home color.
+const itemAway = (bin, it) => it.home !== bin.home;
+const colorOf = zoneId => zoneById(zoneId)?.color || "#6b6b6b";
+const zoneName = zoneId => zoneById(zoneId)?.name || "?";
+function textOn(hex) {
+  const n = parseInt((hex || "#000").slice(1), 16), [r, g, bl] = [n >> 16 & 255, n >> 8 & 255, n & 255].map(v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
+  return .2126 * r + .7152 * g + .0722 * bl > .4 ? "#111" : "#fff";
+}
+const homeStyle = zoneId => `--hc:${colorOf(zoneId)};--hct:${textOn(colorOf(zoneId))}`;
+const homeTag = zoneId => el("span", { class: "tag", style: homeStyle(zoneId), text: "→ " + zoneName(zoneId) });
+const swatch = zoneId => el("span", { class: "swatch", style: `--sw:${colorOf(zoneId)}`, "aria-hidden": "true" });
+function awayCount() {
+  let n = 0;
+  for (const b of state.blocks) { if (isAway(b)) n++; if (!isLoose(b)) n += b.items.filter(i => itemAway(b, i)).length; }
+  return n;
+}
 const label = b => b.code || b.name;
 const inSeason = (b, m) => (b.months || []).includes(m);
 function logMove(b, from, to) {
@@ -291,23 +329,23 @@ function moveBlock(id, zoneId, index) {
 }
 function binItemToBin(fromId, idx, toId) {
   const A = blockById(fromId), B = blockById(toId); if (!A || !B || A === B) return render();
-  const [name] = A.items.splice(idx, 1); if (name == null) return render();
-  B.items.push(name);
-  state.log.unshift({ t: new Date().toISOString(), id: B.id, code: name, from: A.code, to: B.code, by: who() || undefined });
-  queueSave(); render(); toast(`${name} moved to ${B.code}`);
+  const [it] = A.items.splice(idx, 1); if (it == null) return render();
+  B.items.push(it);
+  state.log.unshift({ t: new Date().toISOString(), id: B.id, code: it.name, from: A.code, to: B.code, by: who() || undefined });
+  queueSave(); render(); toast(`${it.name} moved to ${B.code}`);
 }
 function binItemToLoose(fromId, idx, zoneId, index) {
   const A = blockById(fromId); if (!A) return render();
-  const [name] = A.items.splice(idx, 1); if (name == null) return render();
-  const b = { id: "b" + Date.now().toString(36), kind: "loose", name, home: A.home, zone: zoneId, from: A.id, months: [...(A.months || [])], items: [], movedAt: new Date().toISOString() };
+  const [it] = A.items.splice(idx, 1); if (it == null) return render();
+  const b = { id: "b" + Date.now().toString(36), kind: "loose", name: it.name, home: it.home, zone: zoneId, from: A.id, months: [...(A.months || [])], items: [], movedAt: new Date().toISOString() };
   state.blocks.push(b); place(b, zoneId, index);
-  state.log.unshift({ t: b.movedAt, id: b.id, code: name, from: A.code, to: zoneId, by: who() || undefined });
-  queueSave(); render(); toast(`${name} taken out of ${A.code}`);
+  state.log.unshift({ t: b.movedAt, id: b.id, code: it.name, from: A.code, to: zoneId, by: who() || undefined });
+  queueSave(); render(); toast(`${it.name} taken out of ${A.code}`);
 }
 function looseToBin(id, binId) {
   const b = blockById(id), B = blockById(binId); if (!b || !B) return render();
   state.blocks = state.blocks.filter(x => x.id !== id);
-  B.items.push(b.name);
+  B.items.push({ name: b.name, home: b.home });
   state.log.unshift({ t: new Date().toISOString(), id: B.id, code: b.name, from: b.zone, to: B.code, by: who() || undefined });
   queueSave(); render(); toast(`${b.name} put in ${B.code}`);
 }
@@ -331,11 +369,12 @@ const shortDate = iso => new Date(iso).toLocaleDateString(undefined, { month: "s
 
 /* ---------- render ---------- */
 function matches(b) {
-  if (!query) return null;
+  if (!query && !awayOnly) return null;
   const q = query.toLowerCase();
-  const hits = (b.items || []).filter(i => i.toLowerCase().includes(q));
-  const self = ((b.code || "") + " " + b.name + " " + (b.looks || "")).toLowerCase().includes(q);
-  return { ok: self || hits.length > 0, hits };
+  const itemOk = it => (!q || it.name.toLowerCase().includes(q)) && (!awayOnly || itemAway(b, it));
+  const hitItems = isLoose(b) ? [] : b.items.filter(itemOk);
+  const self = (!q || ((b.code || "") + " " + b.name + " " + (b.looks || "")).toLowerCase().includes(q)) && (!awayOnly || isAway(b));
+  return { ok: self || hitItems.length > 0, hits: hitItems.map(i => i.name), hitSet: new Set(hitItems) };
 }
 
 function itemEl(b) {
@@ -343,16 +382,16 @@ function itemEl(b) {
   const cls = ["item"];
   if (isAway(b)) cls.push("away");
   if (m && !m.ok) cls.push("dim");
-  if (m && m.ok) cls.push("hit");
-  const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-label": b.name + (isAway(b) ? ", out" : "") }, b.name);
+  if (m && m.ok && query) cls.push("hit");
+  const node = el("div", { class: cls.join(" "), "data-id": b.id, style: homeStyle(b.home), role: "button", tabindex: "0", "aria-label": b.name + (isAway(b) ? `, belongs in ${zoneName(b.home)}` : "") }, b.name, isAway(b) ? homeTag(b.home) : null);
   node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBlock(b.id); } });
   attachDrag(node, { type: "loose", id: b.id }, () => openBlock(b.id));
   return node;
 }
-function binItemEl(bin, name, idx) {
-  const q = query.toLowerCase();
-  const cls = "item in-bin" + (q ? (name.toLowerCase().includes(q) ? " hit" : " dim") : "");
-  const node = el("div", { class: cls, role: "button", tabindex: "0", "aria-label": `${name}, in ${bin.code}` }, name);
+function binItemEl(bin, it, idx, m) {
+  const away = itemAway(bin, it);
+  const cls = "item in-bin" + (away ? " away" : "") + (m ? (m.hitSet.has(it) ? (query ? " hit" : "") : " dim") : "");
+  const node = el("div", { class: cls, style: homeStyle(it.home), role: "button", tabindex: "0", "aria-label": `${it.name}, in ${bin.code}` + (away ? `, belongs in ${zoneName(it.home)}` : "") }, it.name, away ? homeTag(it.home) : null);
   node.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); openBinItem(bin.id, idx); } });
   attachDrag(node, { type: "binitem", bin: bin.id, idx }, () => openBinItem(bin.id, idx));
   return node;
@@ -365,19 +404,20 @@ function blockEl(b) {
   if (b.looks === "Loose") cls.push("loose");
   if (isAway(b)) cls.push("away");
   if (m && !m.ok) cls.push("dim");
-  if (m && m.ok) cls.push("hit");
+  if (m && m.ok && query) cls.push("hit");
   const open = openBins.has(b.id) || (m && m.ok && m.hits.length > 0);
   if (open) cls.push("open");
-  const meta = isAway(b) && b.movedAt ? `Out since ${shortDate(b.movedAt)}` : `${b.items.length} item${b.items.length === 1 ? "" : "s"}${b.looks && b.looks !== "Loose" ? " · " + b.looks : ""}`;
+  const strays = b.items.filter(i => itemAway(b, i)).length;
+  const meta = (isAway(b) && b.movedAt ? `Out since ${shortDate(b.movedAt)}` : `${b.items.length} item${b.items.length === 1 ? "" : "s"}${b.looks && b.looks !== "Loose" ? " · " + b.looks : ""}`) + (strays ? ` · ${strays} misplaced` : "");
   const edit = el("button", { class: "edit", type: "button" }, "Edit bin");
   edit.addEventListener("pointerdown", e => e.stopPropagation());
   edit.addEventListener("click", e => { e.stopPropagation(); openBlock(b.id); });
-  const node = el("div", { class: cls.join(" "), "data-id": b.id, role: "button", tabindex: "0", "aria-expanded": String(!!open), "aria-label": `${b.code} ${b.name}` },
-    el("div", { class: "code", text: b.code }),
+  const node = el("div", { class: cls.join(" "), "data-id": b.id, style: homeStyle(b.home), role: "button", tabindex: "0", "aria-expanded": String(!!open), "aria-label": `${b.code} ${b.name}` + (isAway(b) ? `, belongs in ${zoneName(b.home)}` : "") },
+    el("div", { class: "top" }, el("span", { class: "code", text: b.code }), isAway(b) ? homeTag(b.home) : null),
     el("div", { class: "name", text: b.name }),
     el("div", { class: "meta" }, meta + " ", el("span", { class: "caret", "aria-hidden": "true", text: "▾" })),
     !open && m && m.ok && m.hits.length ? el("div", { class: "found", text: "↳ " + m.hits.slice(0, 2).join(", ") }) : null,
-    open ? el("div", { class: "bin-items" }, b.items.length ? b.items.map((name, i) => binItemEl(b, name, i)) : el("span", { class: "none", text: "Empty — drag items here" })) : null,
+    open ? el("div", { class: "bin-items" }, b.items.length ? b.items.map((it, i) => binItemEl(b, it, i, m)) : el("span", { class: "none", text: "Empty — drag items here" })) : null,
     open ? edit : null
   );
   node.addEventListener("keydown", e => { if (e.target === node && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggleBin(b.id); } });
@@ -388,17 +428,17 @@ function blockEl(b) {
 function render() {
   if (!state) return;
   renderStatus();
-  renderDest();
+  renderAway();
   // zones
   $("#zones").replaceChildren(...state.zones.map(z => {
     const bins = state.blocks.filter(b => b.zone === z.id && !isLoose(b));
     const loose = state.blocks.filter(b => b.zone === z.id && isLoose(b));
-    return el("section", { class: "zone", "data-zone": z.id },
+    return el("section", { class: "zone", "data-zone": z.id, style: `--zc:${colorOf(z.id)}` },
       el("div", { class: "zone-head" },
-        el("h3", { text: z.name }),
+        el("h3", {}, swatch(z.id), z.name),
         el("span", { class: "label", text: z.note || `${bins.length} bin${bins.length === 1 ? "" : "s"}` }),
         el("button", { class: "add", type: "button", onclick: () => addBlock(z.id) }, "+ Bin"),
-        el("button", { class: "add", type: "button", onclick: () => addBlock(z.id, true) }, "+ Item")
+        el("button", { class: "add", type: "button", onclick: () => openAdd({ dest: "loose:" + z.id }) }, "+ Item")
       ),
       el("div", { class: "blocks" }, bins.length ? bins.map(blockEl) : el("div", { class: "hint", text: "Drag a bin here" })),
       el("div", { class: "items" }, el("span", { class: "label", text: `Loose · ${loose.length}` }),
@@ -407,31 +447,13 @@ function render() {
   }));
 }
 
-/* ---------- quick add ---------- */
-function renderDest() {
-  const sel = $("#qa-dest");
-  const keep = sel.value || store.get("si_dest") || "";
-  destOptions(sel);
-  if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
+function renderAway() {
+  const n = awayCount(), bar = $("#awaybar");
+  if (!n) { awayOnly = false; bar.replaceChildren(el("div", { class: "awaybtn ok" }, "✓ Everything is where it lives")); return; }
+  bar.replaceChildren(el("button", { class: "awaybtn", type: "button", "aria-pressed": String(awayOnly), onclick: () => { awayOnly = !awayOnly; render(); } },
+    el("span", { text: `${n} thing${n === 1 ? "" : "s"} out of place` }), el("span", { class: "sp" }),
+    el("span", { class: "small", text: awayOnly ? "Show all" : "Show only these" })));
 }
-$("#qa-dest").addEventListener("change", e => store.set("si_dest", e.target.value));
-$("#quick").addEventListener("submit", e => {
-  e.preventDefault();
-  const names = $("#qa-name").value.split(",").map(s => s.trim()).filter(Boolean);
-  if (!names.length) { $("#qa-name").focus(); return; }
-  const [kind, ref] = $("#qa-dest").value.split(":");
-  let where;
-  if (kind === "bin") {
-    const b = blockById(ref); if (!b) return;
-    b.items.push(...names); where = b.code;
-  } else {
-    names.forEach((name, i) => state.blocks.push({ id: "b" + Date.now().toString(36) + i, kind: "loose", name, home: ref, zone: ref, months: [], items: [], movedAt: null }));
-    where = "loose in " + zoneById(ref).name;
-  }
-  $("#qa-name").value = "";
-  queueSave(); render();
-  toast(`Added ${names.length === 1 ? names[0] : names.length + " items"} to ${where}`);
-});
 
 $("#q").addEventListener("input", e => { query = e.target.value.trim(); render(); });
 
@@ -565,17 +587,29 @@ function openBlock(id) {
   const looksIn = el("input", { id: "f-looks", value: b.looks || "", placeholder: "e.g. Clear tote, blue lid, 27 gal" });
   looksIn.addEventListener("change", () => { b.looks = looksIn.value.trim(); commit(); });
   const itemsIn = el("textarea", { id: "f-items", placeholder: "One item per line" });
-  itemsIn.value = (b.items || []).join("\n");
-  itemsIn.addEventListener("change", () => { b.items = itemsIn.value.split("\n").map(s => s.trim()).filter(Boolean); commit(); });
+  itemsIn.value = (b.items || []).map(i => i.name).join("\n");
+  itemsIn.addEventListener("change", () => {
+    // keep each item's home when its name is unchanged; new lines live where the bin lives
+    const pool = [...b.items];
+    b.items = itemsIn.value.split("\n").map(s => s.trim()).filter(Boolean).map(name => {
+      const k = pool.findIndex(i => i.name === name);
+      return k >= 0 ? pool.splice(k, 1)[0] : { name, home: b.home };
+    });
+    commit();
+  });
 
   const where = el("div", { class: "seg" }, state.zones.map(z => el("button", {
     type: "button", "aria-pressed": String(b.zone === z.id),
     onclick: () => { moveBlock(b.id, z.id, Infinity); openBlock(id); }
-  }, z.name)));
+  }, swatch(z.id), z.name)));
   const home = el("div", { class: "seg" }, state.zones.map(z => el("button", {
     type: "button", "aria-pressed": String(b.home === z.id),
-    onclick: () => { b.home = z.id; commit(); openBlock(id); }
-  }, z.name)));
+    onclick: () => {
+      // contents that lived with the bin move their home with it
+      if (!isLoose(b)) b.items.forEach(i => { if (i.home === b.home) i.home = z.id; });
+      b.home = z.id; commit(); openBlock(id);
+    }
+  }, swatch(z.id), z.name)));
   const history = state.log.filter(l => l.id === b.id).slice(0, 6);
   const del = el("button", { class: "btn quiet", type: "button" }, "Delete");
   del.addEventListener("click", () => {
@@ -609,21 +643,27 @@ function destOptions(sel, { excludeBin, current } = {}) {
 }
 function openBinItem(binId, idx) {
   const bin = blockById(binId); if (!bin || bin.items[idx] == null) return;
-  const nameIn = el("input", { class: "big", id: "fi-name", value: bin.items[idx], "aria-label": "Item name" });
-  nameIn.addEventListener("change", () => { const v = nameIn.value.trim(); if (v) { bin.items[idx] = v; queueSave(); render(); } });
+  const it = bin.items[idx];
+  const nameIn = el("input", { class: "big", id: "fi-name", value: it.name, "aria-label": "Item name" });
+  nameIn.addEventListener("change", () => { const v = nameIn.value.trim(); if (v) { it.name = v; queueSave(); render(); } });
+  const home = el("div", { class: "seg" }, state.zones.map(z => el("button", {
+    type: "button", "aria-pressed": String(it.home === z.id),
+    onclick: () => { it.home = z.id; queueSave(); render(); openBinItem(binId, bin.items.indexOf(it)); }
+  }, swatch(z.id), z.name)));
   const dest = el("select", { id: "fi-dest", "aria-label": "Move to" });
   destOptions(dest, { excludeBin: bin.id });
   dest.value = "";
   dest.prepend(el("option", { value: "", disabled: true, selected: true }, "Choose a bin or area…"));
   const del = el("button", { class: "btn quiet", type: "button" }, "Delete item");
   del.addEventListener("click", () => {
-    if (del.dataset.armed) { const [n] = bin.items.splice(idx, 1); queueSave(); render(); closeSheet(); toast(`${n} deleted`); }
+    if (del.dataset.armed) { const [n] = bin.items.splice(idx, 1); queueSave(); render(); closeSheet(); toast(`${n.name} deleted`); }
     else { del.dataset.armed = "1"; del.textContent = "Tap again to delete"; del.classList.remove("quiet"); }
   });
   sheet(
     el("div", { class: "sheet-top" }, el("span", { class: "label", text: `In ${bin.code} · ${bin.name}` }), el("span", { class: "sp" }),
       el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
     el("div", { class: "field" }, nameIn),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Where it lives" }), home),
     el("div", { class: "field" }, el("span", { class: "label", text: "Move to" }), dest,
       el("div", { class: "row" }, el("button", { class: "btn primary", type: "button", onclick: () => {
         const [k, ref] = dest.value.split(":"); if (!k) return;
@@ -634,20 +674,112 @@ function openBinItem(binId, idx) {
   );
 }
 
-function addBlock(zoneId, loose = false) {
+function addBlock(zoneId) {
   const id = "b" + Date.now().toString(36);
-  state.blocks.push(loose
-    ? { id, kind: "loose", name: "New item", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null }
-    : { id, code: nextCode(prefixFor(zoneId)), name: "New bin", looks: "", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null });
+  state.blocks.push({ id, code: nextCode(prefixFor(zoneId)), name: "New bin", looks: "", home: zoneId, zone: zoneId, months: [], items: [], movedAt: null });
   queueSave(); render(); openBlock(id);
   setTimeout(() => { const n = $("#f-name"); n && (n.focus(), n.select()); }, 50);
 }
+
+/* ---------- add items ---------- */
+// dest: "bin:<id>" | "loose:<zoneId>" | "new:<zoneId>"
+function openAdd({ dest, home } = {}) {
+  if (!state) return;
+  dest = dest || store.get("si_dest") || "loose:" + state.zones[0].id;
+  const [k0, r0] = dest.split(":");
+  if ((k0 === "bin" && !blockById(r0)) || (k0 !== "bin" && !zoneById(r0))) dest = "loose:" + state.zones[0].id;
+  const destZoneHome = v => { const [k, r] = v.split(":"); return k === "bin" ? blockById(r).home : r; };
+  let homeId = home && zoneById(home) ? home : destZoneHome(dest);
+  let homeTouched = false; // a home carried over from "Add another" still resets if you change the bin
+
+  const nameIn = el("input", { class: "big", id: "a-name", placeholder: "Item name", autocomplete: "off", "aria-label": "Item name" });
+  const sel = el("select", { id: "a-dest", "aria-label": "Put it in" });
+  destOptions(sel);
+  state.zones.forEach((z, i) => sel.querySelectorAll("optgroup")[i].append(el("option", { value: "new:" + z.id }, `+ New bin in ${z.name}…`)));
+  sel.value = dest;
+  const binName = el("input", { id: "a-bin", placeholder: "New bin name (e.g. Christmas lights)", autocomplete: "off" });
+  const binField = el("div", { class: "field" }, el("span", { class: "label", text: "New bin" }), binName);
+  const homeSeg = el("div", { class: "seg" });
+  const drawHome = () => homeSeg.replaceChildren(...state.zones.map(z => el("button", {
+    type: "button", "aria-pressed": String(homeId === z.id),
+    onclick: () => { homeId = z.id; homeTouched = true; drawHome(); }
+  }, swatch(z.id), z.name)));
+  const sync = first => {
+    binField.hidden = !sel.value.startsWith("new:");
+    if (!homeTouched && first !== true) homeId = destZoneHome(sel.value);
+    drawHome();
+  };
+  sel.addEventListener("change", sync);
+  sync(true);
+
+  const submit = e => {
+    e && e.preventDefault();
+    const names = nameIn.value.split(",").map(s => s.trim()).filter(Boolean);
+    if (!names.length) { nameIn.focus(); return; }
+    let [kind, ref] = sel.value.split(":"), where;
+    if (kind === "new") {
+      const id = "b" + Date.now().toString(36);
+      const bin = { id, code: nextCode(prefixFor(ref)), name: binName.value.trim() || "New bin", looks: "", home: ref, zone: ref, months: [], items: [], movedAt: null };
+      state.blocks.push(bin); place(bin, ref, Infinity);
+      kind = "bin"; ref = id;
+    }
+    if (kind === "bin") {
+      const b = blockById(ref);
+      b.items.push(...names.map(name => ({ name, home: homeId })));
+      where = `${b.code} · ${b.name}`;
+    } else {
+      names.forEach((name, i) => state.blocks.push({ id: "b" + Date.now().toString(36) + i, kind: "loose", name, home: homeId, zone: ref, months: [], items: [], movedAt: null }));
+      where = "loose in " + zoneName(ref);
+    }
+    const next = kind + ":" + ref;
+    store.set("si_dest", next);
+    queueSave(); render();
+    addedSheet(names, where, homeId, next, homeId);
+  };
+
+  const s = sheet(
+    el("div", { class: "sheet-top" }, el("strong", { text: "Add items" }), el("span", { class: "sp" }),
+      el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
+    el("form", { class: "field", onsubmit: submit, autocomplete: "off" }, nameIn,
+      el("span", { class: "small", text: "Adding several at once? Separate them with commas." })),
+    el("div", { class: "field" }, el("span", { class: "label", text: "Put it in" }), sel),
+    binField,
+    el("div", { class: "field" }, el("span", { class: "label", text: "Where it lives" }), homeSeg,
+      el("span", { class: "small", text: "Sets its color. If it isn't here, it'll show as out of place." })),
+    el("div", { class: "row" }, el("button", { class: "btn primary", type: "button", onclick: submit }, "Add"),
+      el("button", { class: "btn quiet", type: "button", onclick: closeSheet }, "Cancel"))
+  );
+  setTimeout(() => nameIn.focus(), 50);
+  return s;
+}
+function addedSheet(names, where, homeId, dest, home) {
+  const label = names.length === 1 ? names[0] : `${names.length} items`;
+  sheet(
+    el("div", { class: "sheet-top" }, el("strong", { text: "Added" }), el("span", { class: "sp" }),
+      el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
+    el("div", { class: "done" },
+      el("div", { class: "big" }, `Added ${label} to ${where}`),
+      names.length > 1 ? el("div", { class: "small", text: names.join(", ") }) : null,
+      el("div", { class: "small" }, swatch(homeId), ` Lives in ${zoneName(homeId)}`),
+      el("div", { class: "big", text: "Add another?" }),
+      el("div", { class: "row" },
+        el("button", { class: "btn primary", type: "button", id: "a-again", onclick: () => openAdd({ dest, home }) }, "Add another"),
+        el("button", { class: "btn", type: "button", onclick: closeSheet }, "Done")))
+  );
+  setTimeout(() => $("#a-again")?.focus(), 50);
+}
+$("#addBtn").addEventListener("click", () => openAdd());
 
 /* ---------- settings ---------- */
 function openSettings() {
   const tokIn = el("input", { id: "s-token", type: "password", placeholder: "github_pat_…", value: token(), autocomplete: "off" });
   const nameIn = el("input", { id: "s-name", value: who(), placeholder: "e.g. Chris" });
-  const zoneName = el("input", { id: "s-zone", placeholder: "e.g. Garage, Mom's basement" });
+  const newZone = el("input", { id: "s-zone", placeholder: "e.g. Garage, Mom's basement" });
+  const colors = el("div", { class: "colors" }, state ? state.zones.map(z => {
+    const c = el("input", { type: "color", value: colorOf(z.id), "aria-label": `Color for ${z.name}` });
+    c.addEventListener("change", () => { z.color = c.value; queueSave(); render(); });
+    return el("label", {}, c, z.name);
+  }) : null);
   sheet(
     el("div", { class: "sheet-top" }, el("strong", { text: "Settings" }), el("span", { class: "sp" }),
       el("button", { class: "iconbtn", type: "button", "aria-label": "Close", onclick: closeSheet }, "✕")),
@@ -664,10 +796,12 @@ function openSettings() {
         closeSheet(); lastError = ""; load().then(() => dirty && save()); toast("Settings saved");
       } }, "Save"),
       token() ? el("button", { class: "btn quiet", type: "button", onclick: () => { store.set("si_token", null); closeSheet(); renderStatus(); } }, "Remove token") : null),
-    el("div", { class: "field" }, el("span", { class: "label", text: "Add a location" }), zoneName,
+    state ? el("div", { class: "field" }, el("span", { class: "label", text: "Location colors" }), colors,
+      el("span", { class: "small", text: "Bins and items carry the color of where they live." })) : null,
+    el("div", { class: "field" }, el("span", { class: "label", text: "Add a location" }), newZone,
       el("div", { class: "row" }, el("button", { class: "btn", type: "button", onclick: () => {
-        const n = zoneName.value.trim(); if (!n) return;
-        state.zones.push({ id: "z" + Date.now().toString(36), name: n, note: "" }); queueSave(); render(); closeSheet(); toast(`Added ${n}`);
+        const n = newZone.value.trim(); if (!n) return;
+        state.zones.push({ id: "z" + Date.now().toString(36), name: n, note: "" }); migrate(); queueSave(); render(); closeSheet(); toast(`Added ${n}`);
       } }, "Add location")))
   );
 }
