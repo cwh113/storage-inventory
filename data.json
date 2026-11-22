@@ -855,7 +855,12 @@
         11,
         12
       ],
-      "items": [],
+      "items": [
+        {
+          "name": "Green Forest Pillow",
+          "home": "unit"
+        }
+      ],
       "movedAt": "2026-11-22T17:36:23.077Z"
     }
   ],
