@@ -634,6 +634,16 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmws29ri4",
+      "kind": "loose",
+      "name": "New item",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
