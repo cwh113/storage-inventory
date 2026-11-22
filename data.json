@@ -4,22 +4,26 @@
     {
       "id": "unit",
       "name": "Storage Unit",
-      "note": "Top = front of unit"
+      "note": "Top = front of unit",
+      "color": "#1d4ed8"
     },
     {
       "id": "work",
       "name": "Work Room",
-      "note": ""
+      "note": "",
+      "color": "#c2410c"
     },
     {
       "id": "apt",
       "name": "Apartment",
-      "note": ""
+      "note": "",
+      "color": "#15803d"
     },
     {
       "id": "zmvy6vbql",
       "name": "Car",
-      "note": ""
+      "note": "",
+      "color": "#858585"
     }
   ],
   "blocks": [
@@ -32,12 +36,30 @@
       "zone": "unit",
       "months": [],
       "items": [
-        "Dog Stuff",
-        "Flags and Burgees",
-        "Sentimental Stuff",
-        "Rocks",
-        "Chance Paintings",
-        "Upholstery Stuff"
+        {
+          "name": "Dog Stuff",
+          "home": "unit"
+        },
+        {
+          "name": "Flags and Burgees",
+          "home": "unit"
+        },
+        {
+          "name": "Sentimental Stuff",
+          "home": "unit"
+        },
+        {
+          "name": "Rocks",
+          "home": "unit"
+        },
+        {
+          "name": "Chance Paintings",
+          "home": "unit"
+        },
+        {
+          "name": "Upholstery Stuff",
+          "home": "unit"
+        }
       ],
       "movedAt": null
     },
@@ -56,9 +78,18 @@
         9
       ],
       "items": [
-        "Life Jackets",
-        "Foul Weather Jackets & Pants",
-        "Gloves, Boots, Etc."
+        {
+          "name": "Life Jackets",
+          "home": "unit"
+        },
+        {
+          "name": "Foul Weather Jackets & Pants",
+          "home": "unit"
+        },
+        {
+          "name": "Gloves, Boots, Etc.",
+          "home": "unit"
+        }
       ],
       "movedAt": null
     },
@@ -76,9 +107,18 @@
         12
       ],
       "items": [
-        "Sleeping Bag",
-        "Bike Pump",
-        "Tree Stand Cushion"
+        {
+          "name": "Sleeping Bag",
+          "home": "unit"
+        },
+        {
+          "name": "Bike Pump",
+          "home": "unit"
+        },
+        {
+          "name": "Tree Stand Cushion",
+          "home": "unit"
+        }
       ],
       "movedAt": null
     },
@@ -96,10 +136,22 @@
         3
       ],
       "items": [
-        "Knife Block",
-        "Ice Skates / Pucks",
-        "Ice Boat Chocks",
-        "Ice Boat Gear"
+        {
+          "name": "Knife Block",
+          "home": "unit"
+        },
+        {
+          "name": "Ice Skates / Pucks",
+          "home": "unit"
+        },
+        {
+          "name": "Ice Boat Chocks",
+          "home": "unit"
+        },
+        {
+          "name": "Ice Boat Gear",
+          "home": "unit"
+        }
       ],
       "movedAt": null
     },
@@ -117,12 +169,30 @@
         3
       ],
       "items": [
-        "Skis",
-        "Ski Poles",
-        "Ski Jacket",
-        "Ski Pants",
-        "Ski Socks",
-        "Ski Goggles"
+        {
+          "name": "Skis",
+          "home": "unit"
+        },
+        {
+          "name": "Ski Poles",
+          "home": "unit"
+        },
+        {
+          "name": "Ski Jacket",
+          "home": "unit"
+        },
+        {
+          "name": "Ski Pants",
+          "home": "unit"
+        },
+        {
+          "name": "Ski Socks",
+          "home": "unit"
+        },
+        {
+          "name": "Ski Goggles",
+          "home": "unit"
+        }
       ],
       "movedAt": null
     },
@@ -140,10 +210,22 @@
         3
       ],
       "items": [
-        "Ski Helmet",
-        "Ski Boots",
-        "Hand Warmers",
-        "Waxing Tools"
+        {
+          "name": "Ski Helmet",
+          "home": "unit"
+        },
+        {
+          "name": "Ski Boots",
+          "home": "unit"
+        },
+        {
+          "name": "Hand Warmers",
+          "home": "unit"
+        },
+        {
+          "name": "Waxing Tools",
+          "home": "unit"
+        }
       ],
       "movedAt": null
     },
@@ -169,16 +251,46 @@
         12
       ],
       "items": [
-        "Beach Towels",
-        "Bike Helmet",
-        "Sami Ski Accessories",
-        "LTHS Lacrosse Blanket",
-        "Red Bowl",
-        "Metal Drink Container Bowl",
-        "Black Side Table",
-        "Picture Frames",
-        "Fireplace Gloves",
-        "Boo the Ghost"
+        {
+          "name": "Beach Towels",
+          "home": "unit"
+        },
+        {
+          "name": "Bike Helmet",
+          "home": "unit"
+        },
+        {
+          "name": "Sami Ski Accessories",
+          "home": "unit"
+        },
+        {
+          "name": "LTHS Lacrosse Blanket",
+          "home": "unit"
+        },
+        {
+          "name": "Red Bowl",
+          "home": "unit"
+        },
+        {
+          "name": "Metal Drink Container Bowl",
+          "home": "unit"
+        },
+        {
+          "name": "Black Side Table",
+          "home": "unit"
+        },
+        {
+          "name": "Picture Frames",
+          "home": "unit"
+        },
+        {
+          "name": "Fireplace Gloves",
+          "home": "unit"
+        },
+        {
+          "name": "Boo the Ghost",
+          "home": "unit"
+        }
       ],
       "movedAt": "2026-11-01T20:15:48.031Z"
     },
@@ -191,11 +303,26 @@
       "zone": "unit",
       "months": [],
       "items": [
-        "Wedding Dress",
-        "Wedding Keepsakes",
-        "Books from Mom (Irish Eyes)",
-        "Tiffany Glasses",
-        "Ralph Lauren Box (Empty)"
+        {
+          "name": "Wedding Dress",
+          "home": "unit"
+        },
+        {
+          "name": "Wedding Keepsakes",
+          "home": "unit"
+        },
+        {
+          "name": "Books from Mom (Irish Eyes)",
+          "home": "unit"
+        },
+        {
+          "name": "Tiffany Glasses",
+          "home": "unit"
+        },
+        {
+          "name": "Ralph Lauren Box (Empty)",
+          "home": "unit"
+        }
       ],
       "movedAt": "2026-11-01T20:15:51.077Z"
     },
@@ -208,16 +335,46 @@
       "zone": "unit",
       "months": [],
       "items": [
-        "Ralph Lauren Boxes",
-        "Waterford Vase Box",
-        "Wine Holder",
-        "Jute For Dining Chairs",
-        "North Face Backpacks",
-        "Round Cutting Board",
-        "Green Wrapping Paper",
-        "Balloons",
-        "Picture Frames",
-        "Teavana Strainer"
+        {
+          "name": "Ralph Lauren Boxes",
+          "home": "unit"
+        },
+        {
+          "name": "Waterford Vase Box",
+          "home": "unit"
+        },
+        {
+          "name": "Wine Holder",
+          "home": "unit"
+        },
+        {
+          "name": "Jute For Dining Chairs",
+          "home": "unit"
+        },
+        {
+          "name": "North Face Backpacks",
+          "home": "unit"
+        },
+        {
+          "name": "Round Cutting Board",
+          "home": "unit"
+        },
+        {
+          "name": "Green Wrapping Paper",
+          "home": "unit"
+        },
+        {
+          "name": "Balloons",
+          "home": "unit"
+        },
+        {
+          "name": "Picture Frames",
+          "home": "unit"
+        },
+        {
+          "name": "Teavana Strainer",
+          "home": "unit"
+        }
       ],
       "movedAt": "2026-11-22T17:35:59.761Z"
     },
@@ -406,16 +563,46 @@
       "zone": "work",
       "months": [],
       "items": [
-        "Medical Device Stuff: Springs, EP Leads, Valves, TAVR Valves, Delivery Catheters, Misc. Connectors, Capstone, Packaging Samples, ICE Catheter",
-        "Chalk Bag",
-        "Climbing Harness",
-        "Chess Set",
-        "Rubik’s Cubes",
-        "Muscle Roller",
-        "Drone Controller",
-        "Kindle Screen Protectors",
-        "Leather Dopp Kit",
-        "Glock Case"
+        {
+          "name": "Medical Device Stuff: Springs, EP Leads, Valves, TAVR Valves, Delivery Catheters, Misc. Connectors, Capstone, Packaging Samples, ICE Catheter",
+          "home": "work"
+        },
+        {
+          "name": "Chalk Bag",
+          "home": "work"
+        },
+        {
+          "name": "Climbing Harness",
+          "home": "work"
+        },
+        {
+          "name": "Chess Set",
+          "home": "work"
+        },
+        {
+          "name": "Rubik’s Cubes",
+          "home": "work"
+        },
+        {
+          "name": "Muscle Roller",
+          "home": "work"
+        },
+        {
+          "name": "Drone Controller",
+          "home": "work"
+        },
+        {
+          "name": "Kindle Screen Protectors",
+          "home": "work"
+        },
+        {
+          "name": "Leather Dopp Kit",
+          "home": "work"
+        },
+        {
+          "name": "Glock Case",
+          "home": "work"
+        }
       ],
       "movedAt": null
     },
@@ -428,10 +615,22 @@
       "zone": "work",
       "months": [],
       "items": [
-        "Sleeping Bag",
-        "REI Chair",
-        "Bike Helmet",
-        "Hats"
+        {
+          "name": "Sleeping Bag",
+          "home": "work"
+        },
+        {
+          "name": "REI Chair",
+          "home": "work"
+        },
+        {
+          "name": "Bike Helmet",
+          "home": "work"
+        },
+        {
+          "name": "Hats",
+          "home": "work"
+        }
       ],
       "movedAt": null
     },
@@ -657,7 +856,10 @@
         12
       ],
       "items": [
-        "Misc. Fall / Xmas"
+        {
+          "name": "Misc. Fall / Xmas",
+          "home": "unit"
+        }
       ],
       "movedAt": "2026-11-22T17:36:23.077Z"
     }
