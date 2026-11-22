@@ -624,6 +624,16 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmws29eoq",
+      "kind": "loose",
+      "name": "New item",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
