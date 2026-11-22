@@ -63,23 +63,6 @@
       "movedAt": null
     },
     {
-      "id": "su3",
-      "code": "SU-3",
-      "name": "Holiday",
-      "looks": "Large clear tote",
-      "home": "unit",
-      "zone": "unit",
-      "months": [
-        10,
-        11,
-        12
-      ],
-      "items": [
-        "Misc. Fall / Xmas"
-      ],
-      "movedAt": null
-    },
-    {
       "id": "su4",
       "code": "SU-4",
       "name": "Hunting & Camping",
@@ -279,19 +262,6 @@
         1,
         2,
         3
-      ],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "li4",
-      "kind": "loose",
-      "name": "Christmas Tree Stand",
-      "home": "unit",
-      "zone": "unit",
-      "months": [
-        11,
-        12
       ],
       "items": [],
       "movedAt": null
@@ -660,9 +630,54 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "li4",
+      "kind": "loose",
+      "name": "Christmas Tree Stand",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        11,
+        12
+      ],
+      "items": [],
+      "movedAt": "2026-11-22T17:36:40.681Z"
+    },
+    {
+      "id": "su3",
+      "code": "SU-3",
+      "name": "Holiday",
+      "looks": "Large clear tote",
+      "home": "unit",
+      "zone": "apt",
+      "months": [
+        10,
+        11,
+        12
+      ],
+      "items": [
+        "Misc. Fall / Xmas"
+      ],
+      "movedAt": "2026-11-22T17:36:23.077Z"
     }
   ],
   "log": [
+    {
+      "t": "2026-11-22T17:36:40.681Z",
+      "id": "li4",
+      "from": "unit",
+      "to": "apt",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:36:23.077Z",
+      "id": "su3",
+      "code": "SU-3",
+      "from": "unit",
+      "to": "apt",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-22T17:35:59.762Z",
       "id": "bmwqwy603",
