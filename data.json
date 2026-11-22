@@ -192,7 +192,9 @@
         "LTHS Lacrosse Blanket",
         "Red Bowl",
         "Metal Drink Container Bowl",
-        "Black Side Table"
+        "Black Side Table",
+        "Picture Frames",
+        "Fireplace Gloves"
       ],
       "movedAt": "2026-11-01T20:15:48.031Z"
     },
@@ -567,6 +569,66 @@
       "movedAt": "2026-11-22T17:31:51.764Z"
     },
     {
+      "id": "bmws2psd1",
+      "kind": "loose",
+      "name": "Tall Lamp",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:31:56.556Z"
+    },
+    {
+      "id": "bmws29eoq",
+      "kind": "loose",
+      "name": "Glasses",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:32:03.745Z"
+    },
+    {
+      "id": "bmws28sc6",
+      "kind": "loose",
+      "name": "Bowls",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:32:07.923Z"
+    },
+    {
+      "id": "bmws296ib",
+      "kind": "loose",
+      "name": "Plates",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:32:11.899Z"
+    },
+    {
+      "id": "bmws2i737",
+      "kind": "loose",
+      "name": "Pots and Pans",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:32:15.660Z"
+    },
+    {
+      "id": "bmws2vx9m",
+      "kind": "loose",
+      "name": "Large Canvas",
+      "home": "unit",
+      "zone": "unit",
+      "months": [],
+      "items": [],
+      "movedAt": "2026-11-22T17:32:20.268Z"
+    },
+    {
       "id": "bmvy6kzcx",
       "kind": "loose",
       "name": "Boo the Ghost",
@@ -601,7 +663,6 @@
       "months": [],
       "items": [
         "Ralph Lauren Boxes",
-        "Picture Frames",
         "Waterford Vase Box",
         "Wine Holder",
         "Jute For Dining Chairs",
@@ -610,73 +671,70 @@
         "Green Wrapping Paper",
         "Balloons",
         "Picture Frames",
-        "Teavana Strainer",
-        "Fireplace Gloves"
+        "Teavana Strainer"
       ],
-      "movedAt": null
-    },
-    {
-      "id": "bmws28sc6",
-      "kind": "loose",
-      "name": "Bowls",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "bmws296ib",
-      "kind": "loose",
-      "name": "Plates",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "bmws29eoq",
-      "kind": "loose",
-      "name": "Glasses",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "bmws2i737",
-      "kind": "loose",
-      "name": "Pots and Pans",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "bmws2psd1",
-      "kind": "loose",
-      "name": "Tall Lamp",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
-      "movedAt": null
-    },
-    {
-      "id": "bmws2vx9m",
-      "kind": "loose",
-      "name": "Large Canvas",
-      "home": "unit",
-      "zone": "apt",
-      "months": [],
-      "items": [],
       "movedAt": null
     }
   ],
   "log": [
+    {
+      "t": "2026-11-22T17:32:58.308Z",
+      "id": "su6",
+      "code": "Fireplace Gloves",
+      "from": "AP-1",
+      "to": "SU-6",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:32:40.389Z",
+      "id": "su6",
+      "code": "Picture Frames",
+      "from": "AP-1",
+      "to": "SU-6",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:32:20.268Z",
+      "id": "bmws2vx9m",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:32:15.660Z",
+      "id": "bmws2i737",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:32:11.900Z",
+      "id": "bmws296ib",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:32:07.923Z",
+      "id": "bmws28sc6",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:32:03.745Z",
+      "id": "bmws29eoq",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
+    {
+      "t": "2026-11-22T17:31:56.556Z",
+      "id": "bmws2psd1",
+      "from": "apt",
+      "to": "unit",
+      "by": "Chris"
+    },
     {
       "t": "2026-11-22T17:31:51.764Z",
       "id": "bmws29ri4",
