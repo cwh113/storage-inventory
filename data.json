@@ -871,6 +871,10 @@
         {
           "name": "Christmas Lights",
           "home": "unit"
+        },
+        {
+          "name": "Christmas Candles",
+          "home": "unit"
         }
       ],
       "movedAt": "2026-11-22T17:36:23.077Z"
