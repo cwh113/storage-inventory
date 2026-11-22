@@ -673,6 +673,16 @@
       "months": [],
       "items": [],
       "movedAt": null
+    },
+    {
+      "id": "bmws2vx9m",
+      "kind": "loose",
+      "name": "New item",
+      "home": "apt",
+      "zone": "apt",
+      "months": [],
+      "items": [],
+      "movedAt": null
     }
   ],
   "log": [
